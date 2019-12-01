@@ -137,8 +137,11 @@ struct desidero {
 	char ferie[40];
 	char congre[20];
 	char riposi[20];
+	char mattine[20];
 	char pome[20];
 	char notti[20];
+	char btx[10];
+	char smpom[10];
 };
 /*
 char *med[13][13] = {
@@ -312,7 +315,7 @@ c = scanf("%c",&c);
 struct medico *dutur()
 {
 struct medico *scacca, *stanzi, *sanga, *riga, *frencis, *mante, *fiumix, *costa, *borel, *bianchi, *basil, *balge, *alippa;
-struct desidero *sca, *sta, *san, *rig, *fre, *man,*fiu, *cos, *bor, *bia, *bas, *bal, *ali; 
+struct desidero *sca, *sta, *san, *rig, *fre, *man, *fiu, *cos, *bor, *bia, *bas, *bal, *ali; 
 
 scacca = malloc(sizeof(struct medico));
 strcpy(scacca->name,"Scaccabarozzi");
@@ -325,6 +328,16 @@ scacca->n_fest = 4;
 scacca->next = NULL;
 scacca->iwant = sca;
 
+sca = malloc(sizeof(struct desidero));
+strcpy(sca->ferie,"");
+strcpy(sca->congre,"7-8");
+strcpy(sca->riposi,"1-2-3-24");
+strcpy(sca->mattine,"");
+strcpy(sca->pome,"14");
+strcpy(sca->notti,"");
+strcpy(sca->btx,"");
+strcpy(sca->smpom,"");
+
 stanzi = malloc(sizeof(struct medico));
 strcpy(stanzi->name,"Stanzani");
 strcpy(stanzi->cap,"UNE");
@@ -335,6 +348,16 @@ stanzi->r_fest = 5;
 stanzi->n_fest = 2;
 stanzi->next = scacca;
 stanzi->iwant = sta;
+
+sta = malloc(sizeof(struct desidero));
+strcpy(sta->ferie,"18-19-20-21-22");
+strcpy(sta->congre,"14-15-29");
+strcpy(sta->riposi,"");
+strcpy(sta->mattine,"4-16");
+strcpy(sta->pome,"4-6-12-16-27");
+strcpy(sta->notti,"3");
+strcpy(sta->btx,"28");
+strcpy(sta->smpom,"");
 
 sanga = malloc(sizeof(struct medico));
 strcpy(sanga->name,"Sangalli");
@@ -347,6 +370,16 @@ sanga->n_fest = 3;
 sanga->next = stanzi;
 sanga->iwant = san;
 
+san = malloc(sizeof(struct desidero));
+strcpy(san->ferie,"");
+strcpy(san->congre,"");
+strcpy(san->riposi,"2-16");
+strcpy(san->mattine,"21-22-23");
+strcpy(san->pome,"14-21-22-23");
+strcpy(san->notti,"");
+strcpy(san->btx,"");
+strcpy(san->smpom,"");
+
 riga = malloc(sizeof(struct medico));
 strcpy(riga->name,"Rigamonti");
 strcpy(riga->cap,"CUNE");
@@ -357,6 +390,16 @@ riga->r_fest = 2;
 riga->n_fest = 4;
 riga->next = sanga;
 riga->iwant = rig;
+
+rig = malloc(sizeof(struct desidero));
+strcpy(rig->ferie,"11-12-13-14-15");
+strcpy(rig->congre,"25-26");
+strcpy(rig->riposi,"");
+strcpy(rig->mattine,"");
+strcpy(rig->pome,"");
+strcpy(rig->notti,"2-3-20");
+strcpy(rig->btx,"");
+strcpy(rig->smpom,"");
 
 frencis = malloc(sizeof(struct medico));
 strcpy(frencis->name,"Piamarta");
@@ -369,6 +412,16 @@ frencis->n_fest = 5;
 frencis->next = riga;
 frencis->iwant = fre;
 
+fre = malloc(sizeof(struct desidero));
+strcpy(fre->ferie,"25-26-27-28-29");
+strcpy(fre->congre,"7-8");
+strcpy(fre->riposi,"10-20");
+strcpy(fre->mattine,"");
+strcpy(fre->pome,"5");
+strcpy(fre->notti,"5");
+strcpy(fre->btx,"");
+strcpy(fre->smpom,"");
+
 mante = malloc(sizeof(struct medico));
 strcpy(mante->name,"Mantero");
 strcpy(frencis->cap,"SN");
@@ -379,6 +432,16 @@ mante->r_fest = 4;
 mante->n_fest = 6;
 mante->next = frencis;
 mante->iwant = man;
+
+man = malloc(sizeof(struct desidero));
+strcpy(man->ferie,"11-12-13-14-15");
+strcpy(man->congre,"27");
+strcpy(man->riposi,"");
+strcpy(man->mattine,"");
+strcpy(man->pome,"8");
+strcpy(man->notti,"8");
+strcpy(man->btx,"");
+strcpy(man->smpom,"");
 
 fiumix = malloc(sizeof(struct medico));
 strcpy(fiumix->name,"Fiumani");
@@ -391,6 +454,17 @@ fiumix->n_fest = 3;
 fiumix->next = mante;
 fiumix->iwant = fiu;
 
+fiu = malloc(sizeof(struct desidero));
+strcpy(fiu->ferie,"");
+strcpy(fiu->congre,"");
+strcpy(fiu->riposi,"2-3");
+strcpy(fiu->mattine,"");
+strcpy(fiu->pome,"20-26");
+strcpy(fiu->notti,"26");
+strcpy(fiu->btx,"");
+strcpy(fiu->smpom,"");
+
+
 costa = malloc(sizeof(struct medico));
 strcpy(costa->name,"Costantino");
 strcpy(costa->cap,"DCUVT");
@@ -401,6 +475,17 @@ costa->r_fest = 5;
 costa->n_fest = 3;
 costa->next = fiumix;
 costa->iwant = cos;
+
+cos = malloc(sizeof(struct desidero));
+strcpy(cos->ferie,"");
+strcpy(cos->congre,"7-8");
+strcpy(cos->riposi,"1-9-10-13");
+strcpy(cos->mattine,"");
+strcpy(cos->pome,"14");
+strcpy(cos->notti,"");
+strcpy(cos->btx,"");
+strcpy(cos->smpom,"");
+strcpy(cos->smpom,"");
 
 borel= malloc(sizeof(struct medico));
 strcpy(borel->name,"Borelli");
@@ -413,6 +498,16 @@ borel->n_fest = 5;
 borel->next = costa;
 borel->iwant = bor;
 
+bor = malloc(sizeof(struct desidero));
+strcpy(bor->ferie,"11-12");
+strcpy(bor->congre,"");
+strcpy(bor->riposi,"9-10-23-24");
+strcpy(bor->mattine,"");
+strcpy(bor->pome,"5");
+strcpy(bor->notti,"");
+strcpy(bor->btx,"");
+strcpy(bor->smpom,"");
+
 bianchi = malloc(sizeof(struct medico));
 strcpy(bianchi->name,"Bianchi");
 strcpy(bianchi->cap,"UOP");
@@ -423,6 +518,16 @@ bianchi->r_fest = 7;
 bianchi->n_fest = 3;
 bianchi->next = borel;
 bianchi->iwant = bia;
+
+bia = malloc(sizeof(struct desidero));
+strcpy(bia->ferie,"4-5-6-7-8-11");
+strcpy(bia->congre,"");
+strcpy(bia->riposi,"");
+strcpy(bia->mattine,"");
+strcpy(bia->pome,"");
+strcpy(bia->notti,"13");
+strcpy(bia->btx,"");
+strcpy(bia->smpom,"");
 
 basil = malloc(sizeof(struct medico));
 strcpy(basil->name,"Basilico");
@@ -435,6 +540,16 @@ basil->n_fest = 4;
 basil->next = bianchi;
 basil->iwant = bas;
 
+bas = malloc(sizeof(struct desidero));
+strcpy(bas->ferie,"14-15-30");
+strcpy(bas->congre,"7-8");
+strcpy(bas->riposi,"16-17");
+strcpy(bas->mattine,"");
+strcpy(bas->pome,"");
+strcpy(bas->notti,"");
+strcpy(bas->btx,"");
+strcpy(bas->smpom,"");
+
 balge= malloc(sizeof(struct medico));
 strcpy(balge->name,"Balgera");
 strcpy(balge->cap,"USO");
@@ -446,6 +561,16 @@ balge->n_fest = 4;
 balge->next = basil;
 balge->iwant = bal;
 
+bal = malloc(sizeof(struct desidero));
+strcpy(bal->ferie,"");
+strcpy(bal->congre,"");
+strcpy(bal->riposi,"16-24");
+strcpy(bal->mattine,"");
+strcpy(bal->pome,"");
+strcpy(bal->notti,"");
+strcpy(bal->btx,"");
+strcpy(bal->smpom,"14-28");
+
 alippa = malloc(sizeof(struct medico));
 strcpy(alippa->name,"Aliprandi");
 strcpy(alippa->cap,"DCUVT");
@@ -456,6 +581,16 @@ alippa->r_fest = 2;
 alippa->n_fest = 4;
 alippa->next = balge;
 alippa->iwant = ali;
+
+ali = malloc(sizeof(struct desidero));
+strcpy(ali->ferie,"");
+strcpy(ali->congre,"");
+strcpy(ali->riposi,"22");
+strcpy(ali->mattine,"");
+strcpy(ali->pome,"13-14-28");
+strcpy(ali->notti,"");
+strcpy(ali->btx,"");
+strcpy(ali->smpom,"");
 
 return(alippa);
 }
