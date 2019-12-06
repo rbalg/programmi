@@ -119,6 +119,7 @@ P = parkinson
 N = neuromuscolare
 T = stroke
 E = emg
+B = tossina
 */
 
 struct medico {
@@ -142,6 +143,11 @@ struct desidero {
 	char notti[20];
 	char btx[10];
 	char smpom[10];
+};
+
+struct des_amb {
+	char amb[1];
+	int day;
 };
 /*
 char *med[13][13] = {
