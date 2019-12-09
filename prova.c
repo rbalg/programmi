@@ -145,7 +145,7 @@ struct desidero {
 
 struct des_amb {
 	char amb[1];
-	int day;
+	char day[10];
 	struct des_amb *next;
 };
 /*
@@ -321,7 +321,8 @@ struct medico *dutur()
 {
 struct medico *scacca, *stanzi, *sanga, *riga, *frencis, *mante, *fiumix, *costa, *borel, *bianchi, *basil, *balge, *alippa;
 struct desidero *sca, *sta, *san, *rig, *fre, *man, *fiu, *cos, *bor, *bia, *bas, *bal, *ali; 
-
+struct des_amb *stnz, *blgr;
+	
 scacca = malloc(sizeof(struct medico));
 strcpy(scacca->name,"Scaccabarozzi");
 strcpy(scacca->cap,"UVOT");
@@ -360,6 +361,11 @@ strcpy(sta->mattine,"4-16");
 strcpy(sta->pome,"4-6-12-16-27");
 strcpy(sta->notti,"3");
 
+stnz = malloc(sizeof(struct des_amb));
+strcpy(stnz->amb,"B");
+strcpy(stnz->day,"28");
+stnz->next = blgr;
+	
 sanga = malloc(sizeof(struct medico));
 strcpy(sanga->name,"Sangalli");
 strcpy(sanga->cap,"DCVT");
@@ -550,6 +556,11 @@ strcpy(bal->mattine,"");
 strcpy(bal->pome,"");
 strcpy(bal->notti,"");
 
+blgr = malloc(sizeof(struct des_amb));
+strcpy(blgr->amb,"S");
+strcpy(blgr->day,"14-28);
+blgr->next = NULL;
+	
 alippa = malloc(sizeof(struct medico));
 strcpy(alippa->name,"Aliprandi");
 strcpy(alippa->cap,"DCUVT");
