@@ -571,7 +571,7 @@ bal->amb = blgr;
 
 blgr = malloc(sizeof(struct des_amb));
 strcpy(blgr->amb,"S");
-strcpy(blgr->day,"14-28);
+strcpy(blgr->day,"14-28");
 blgr->next = NULL;
 	
 alippa = malloc(sizeof(struct medico));
