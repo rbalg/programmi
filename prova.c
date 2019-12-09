@@ -141,6 +141,7 @@ struct desidero {
 	char mattine[20];
 	char pome[20];
 	char notti[20];
+	struct des_amb *amb;
 };
 
 struct des_amb {
@@ -341,6 +342,7 @@ strcpy(sca->riposi,"1-2-3-24");
 strcpy(sca->mattine,"");
 strcpy(sca->pome,"14");
 strcpy(sca->notti,"");
+sca->amb = NULL;
 
 stanzi = malloc(sizeof(struct medico));
 strcpy(stanzi->name,"Stanzani");
@@ -360,6 +362,7 @@ strcpy(sta->riposi,"");
 strcpy(sta->mattine,"4-16");
 strcpy(sta->pome,"4-6-12-16-27");
 strcpy(sta->notti,"3");
+sta->amb = stnz;
 
 stnz = malloc(sizeof(struct des_amb));
 strcpy(stnz->amb,"B");
@@ -384,6 +387,7 @@ strcpy(san->riposi,"2-16");
 strcpy(san->mattine,"21-22-23");
 strcpy(san->pome,"14-21-22-23");
 strcpy(san->notti,"");
+san->amb = NULL;
 
 riga = malloc(sizeof(struct medico));
 strcpy(riga->name,"Rigamonti");
@@ -403,6 +407,7 @@ strcpy(rig->riposi,"");
 strcpy(rig->mattine,"");
 strcpy(rig->pome,"");
 strcpy(rig->notti,"2-3-20");
+rig->amb = NULL;
 
 frencis = malloc(sizeof(struct medico));
 strcpy(frencis->name,"Piamarta");
@@ -422,6 +427,7 @@ strcpy(fre->riposi,"10-20");
 strcpy(fre->mattine,"");
 strcpy(fre->pome,"5");
 strcpy(fre->notti,"5");
+fre->amb = NULL;
 
 mante = malloc(sizeof(struct medico));
 strcpy(mante->name,"Mantero");
@@ -441,6 +447,7 @@ strcpy(man->riposi,"");
 strcpy(man->mattine,"");
 strcpy(man->pome,"8");
 strcpy(man->notti,"8");
+man->amb = NULL;
 
 fiumix = malloc(sizeof(struct medico));
 strcpy(fiumix->name,"Fiumani");
@@ -460,6 +467,7 @@ strcpy(fiu->riposi,"2-3");
 strcpy(fiu->mattine,"");
 strcpy(fiu->pome,"20-26");
 strcpy(fiu->notti,"26");
+fiu->amb = NULL;
 
 costa = malloc(sizeof(struct medico));
 strcpy(costa->name,"Costantino");
@@ -479,6 +487,7 @@ strcpy(cos->riposi,"1-9-10-13");
 strcpy(cos->mattine,"");
 strcpy(cos->pome,"14");
 strcpy(cos->notti,"");
+cos->amb = NULL;
 
 borel= malloc(sizeof(struct medico));
 strcpy(borel->name,"Borelli");
@@ -498,6 +507,7 @@ strcpy(bor->riposi,"9-10-23-24");
 strcpy(bor->mattine,"");
 strcpy(bor->pome,"5");
 strcpy(bor->notti,"");
+bor->amb = NULL;
 
 bianchi = malloc(sizeof(struct medico));
 strcpy(bianchi->name,"Bianchi");
@@ -517,6 +527,7 @@ strcpy(bia->riposi,"");
 strcpy(bia->mattine,"");
 strcpy(bia->pome,"");
 strcpy(bia->notti,"13");
+bia->amb = NULL;
 
 basil = malloc(sizeof(struct medico));
 strcpy(basil->name,"Basilico");
@@ -536,6 +547,7 @@ strcpy(bas->riposi,"16-17");
 strcpy(bas->mattine,"");
 strcpy(bas->pome,"");
 strcpy(bas->notti,"");
+bas->amb = NULL;
 
 balge= malloc(sizeof(struct medico));
 strcpy(balge->name,"Balgera");
@@ -555,6 +567,7 @@ strcpy(bal->riposi,"16-24");
 strcpy(bal->mattine,"");
 strcpy(bal->pome,"");
 strcpy(bal->notti,"");
+bal->amb = blgr;
 
 blgr = malloc(sizeof(struct des_amb));
 strcpy(blgr->amb,"S");
@@ -579,6 +592,7 @@ strcpy(ali->riposi,"22");
 strcpy(ali->mattine,"");
 strcpy(ali->pome,"13-14-28");
 strcpy(ali->notti,"");
+ali->amb = NULL;
 
 return(alippa);
 }
