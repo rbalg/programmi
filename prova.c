@@ -620,6 +620,7 @@ while((item = menu()) != 9) {
 		printf("il primo giorno del mese selezionato è = %s\n",giorni[day1]);
 		build_month(day1,dnum);
 		printf("tutto OK\n");
+		scanf("%s",&risp);
 	}
 	else if(item == 3) {
 		for(x = 1;x < 31;x++)
