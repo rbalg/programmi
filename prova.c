@@ -4,6 +4,9 @@
 #include <math.h>
 #include <malloc.h>
 
+#define WHITE \e[1;37m
+#define RED \033[31m
+
 char *mesi[] =
 {
 "gen",
@@ -270,10 +273,11 @@ printf("mese = %s\n",mesi[month]);
         	x = 0;
 	if(mes[y] != gfest)
 	        mes[y] = giorni[x];
-	printf("\033[31m mes[%d] = %s\n",y,mes[y]);
+	printf("RED mes[%d] = %s\n",y,mes[y]);
 	++y;
 	++x;
     } while(y < dmesi[month]);
+    printf("WHITE");
 return;
 }
 
