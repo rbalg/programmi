@@ -273,7 +273,7 @@ printf("mese = %s\n",mesi[month]);
         	x = 0;
 	if(mes[y] != gfest)
 	        mes[y] = giorni[x];
-	printf("RED mes[%d] = %s\n",y,mes[y]);
+	printf("\033[31m mes[%d] = %s\n",y,mes[y]);
 	++y;
 	++x;
     } while(y < dmesi[month]);
