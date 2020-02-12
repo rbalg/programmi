@@ -4,8 +4,17 @@
 #include <math.h>
 #include <malloc.h>
 
-#define WHITE \e[1;37m
-#define RED \033[31m
+#define RESET   "\033[0m"
+#define BLACK   "\033[30m"      /* Black */
+#define RED     "\033[31m"      /* Red */
+#define GREEN   "\033[32m"      /* Green */
+#define YELLOW  "\033[33m"      /* Yellow */
+#define BLUE    "\033[34m"      /* Blue */
+#define MAGENTA "\033[35m"      /* Magenta */
+#define CYAN    "\033[36m"      /* Cyan */
+#define WHITE   "\033[37m"      /* White */
+
+char turni[30][12];
 
 char *mesi[] =
 {
@@ -273,11 +282,11 @@ printf("mese = %s\n",mesi[month]);
         	x = 0;
 	if(mes[y] != gfest)
 	        mes[y] = giorni[x];
-	printf("\033[31m mes[%d] = %s\n",y,mes[y]);
+	printf(RED"mes[%d] = %s\n",y,mes[y]);
 	++y;
 	++x;
     } while(y < dmesi[month]);
-    printf("WHITE");
+    printf(WHITE);
 return;
 }
 
@@ -601,10 +610,51 @@ ali->amb = NULL;
 return(alippa);
 }
 
+int control(char want[1], char abil[6])
+{
+	int x;
+
+	for(x = 0;x < 6;x++)
+		if(want[1] == abil[x])
+			return(0);
+	return(1);
+}
+void build_turni(int dnum, struct medico *doctor)
+{
+int x, y, month, doc_less;
+char skill[6];
+struct medico *this;
+
+month = fabs(dnum/100) - 1;
+this = doctor;
+y = 0;
+for(x = 0;x < dmesi[month];x++) {   /* scorre i giorni del mese prescelto per i turni */
+	strcpy(skill, this->cap);
+	if(strcmp("lun",mes[x]) == 0) {
+		do {
+			while(y < 12) {      /* cerca il medico idoneo per la stroke */	
+				if(control("T",skill) == 0) {
+					turni[x][y] = "T";
+					break;
+				}
+				else {
+					if(this->next != NULL) {
+						this = this->next;
+						++y;
+					}
+					else
+						break;
+				}
+			}
+		} while((mes[++x] != "SAB") ||(mes[x] != "FES") || (x = 30));
+	}
+}
+}
+
 void main()
 {
 char data[15],risp[2],c; 
-int x, dnum, day1, item;
+int x, y, dnum, day1, item;
 struct medico *current;
 
 while((item = menu()) != 9) {
@@ -624,7 +674,7 @@ while((item = menu()) != 9) {
 		printf("il primo giorno del mese selezionato è = %s\n",giorni[day1]);
 		build_month(day1,dnum);
 		printf("tutto OK\n");
-		scanf("%s",&risp);
+		scanf("%s",risp);
 	}
 	else if(item == 3) {
 		for(x = 1;x < 31;x++)
@@ -633,14 +683,16 @@ while((item = menu()) != 9) {
 	}
 	else if(item == 4) {
 		current = dutur();
-		for(x = 0;x < 13;x++) {
-			printf("medico = %s\n",current->name);
+		build_turni(dnum,current);
+		for(x = 0;x < 30;x++) {
+			for(y = 0;y < 12;y++)
+				printf("%s = %s\n",mes[x],turni[x][y]);
 			if((current = current->next) == NULL)			
 				break;				
 		}
 		scanf("%s",risp);
 	}
-};
+}
 }
 
 
