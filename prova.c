@@ -622,31 +622,30 @@ int control(char want[1], char abil[6])
 void build_turni(int dnum, struct medico *doctor)
 {
 int x, y, month, doc_less;
-char skill[6];
+/* char skill[6]; */
 struct medico *this;
 
 month = fabs(dnum/100) - 1;
 this = doctor;
 y = 0;
 for(x = 0;x < dmesi[month];x++) {   /* scorre i giorni del mese prescelto per i turni */
-	strcpy(skill, this->cap);
+/*	strcpy(skill, this->cap);   */
 	if(strcmp("lun",mes[x]) == 0) {
-		do {
-			while(y < 12) {      /* cerca il medico idoneo per la stroke */	
-				if(control("T",skill) == 0) {
-					turni[x][y] = "T";
-					break;
+		while((strcmp("SAB",mes[x]) != 0) && (strcmp("FES",mes[x]) != 0)) {
+			if(y > 12)
+				y = 0;   
+			if(control("T",this->cap) == 0) 
+				turni[x++][y] = "T";
+			else {
+				if(this->next != NULL) {
+					this = this->next;
+					++y;
 				}
-				else {
-					if(this->next != NULL) {
-						this = this->next;
-						++y;
-					}
-					else
-						break;
-				}
+				else
+					this = doctor;
+				
 			}
-		} while((mes[++x] != "SAB") ||(mes[x] != "FES") || (x = 30));
+		}
 	}
 }
 }
@@ -685,8 +684,10 @@ while((item = menu()) != 9) {
 		current = dutur();
 		build_turni(dnum,current);
 		for(x = 0;x < 30;x++) {
+			printf("%s = ",mes[x]);
 			for(y = 0;y < 12;y++)
-				printf("%s = %s\n",mes[x],turni[x][y]);
+				printf("%d ",turni[x][y]);
+			printf("\n");
 			if((current = current->next) == NULL)			
 				break;				
 		}
