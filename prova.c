@@ -683,13 +683,18 @@ while((item = menu()) != 9) {
 	else if(item == 4) {
 		current = dutur();
 		build_turni(dnum,current);
+		for(y = 0;y < 12;y++) {
+			printf("%s\t",current->name);
+			current = current->next;
+		}
+		printf("\n");
 		for(x = 0;x < 30;x++) {
 			printf("%s = ",mes[x]);
 			for(y = 0;y < 12;y++)
 				printf("%d ",turni[x][y]);
 			printf("\n");
-			if((current = current->next) == NULL)			
-				break;				
+/*			if((current = current->next) == NULL)			
+				break;			*/	
 		}
 		scanf("%s",risp);
 	}
