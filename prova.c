@@ -610,41 +610,37 @@ ali->amb = NULL;
 return(alippa);
 }
 
-int control(char want[1], char abil[6])
-{
-	int x;
-
-	for(x = 0;x < 6;x++)
-		if(want[1] == abil[x])
-			return(0);
-	return(1);
-}
 void build_turni(int dnum, struct medico *doctor)
 {
 int x, y, month, doc_less;
-/* char skill[6]; */
 struct medico *this;
 
 month = fabs(dnum/100) - 1;
 this = doctor;
 y = 0;
 for(x = 0;x < dmesi[month];x++) {   /* scorre i giorni del mese prescelto per i turni */
-/*	strcpy(skill, this->cap);   */
 	if(strcmp("lun",mes[x]) == 0) {
 		while((strcmp("SAB",mes[x]) != 0) && (strcmp("FES",mes[x]) != 0)) {
-			if(y > 12)
-				y = 0;   
-			if(control("T",this->cap) == 0) 
-				turni[x++][y] = "T";
+			if((strchr(this->cap,'T')) != NULL)
+				turni[x++][y] = 'T';
 			else {
-				if(this->next != NULL) {
+				if(this->next == NULL) {
+					y = 0;
+					this = doctor;
+				}
+				else {
 					this = this->next;
 					++y;
 				}
-				else
-					this = doctor;
-				
 			}
+		}
+		if(this->next == NULL) {
+			y = 0;
+			this = doctor;
+		}
+		else {
+			this = this->next;
+			++y;
 		}
 	}
 }
@@ -652,7 +648,7 @@ for(x = 0;x < dmesi[month];x++) {   /* scorre i giorni del mese prescelto per i 
 
 void main()
 {
-char data[15],risp[2],c; 
+char data[15],risp[2],nam[4],c; 
 int x, y, dnum, day1, item;
 struct medico *current;
 
@@ -672,26 +668,34 @@ while((item = menu()) != 9) {
 		day1 = get_day(dnum);
 		printf("il primo giorno del mese selezionato è = %s\n",giorni[day1]);
 		build_month(day1,dnum);
+/*
 		printf("tutto OK\n");
 		scanf("%s",risp);
+*/
 	}
 	else if(item == 3) {
 		for(x = 1;x < 31;x++)
 			printf("%d %s\n",x,mes[x]);
-		scanf("%c",&c);;
+		scanf("%c",&c);
 	}
 	else if(item == 4) {
 		current = dutur();
 		build_turni(dnum,current);
-		for(y = 0;y < 12;y++) {
-			printf("%s\t",current->name);
+		printf("\t\t");
+		for(y = 0;y < 13;y++) {
+			strncpy(nam, current->name, 3);
+			nam[3] = '\0';
+			printf("%c %s ",124,nam);    /* 124 è il codice per il trattino verticale */
 			current = current->next;
 		}
 		printf("\n");
 		for(x = 0;x < 30;x++) {
-			printf("%s = ",mes[x]);
-			for(y = 0;y < 12;y++)
-				printf("%d ",turni[x][y]);
+			printf("%d\t  %s = ",x,mes[x]);
+			for(y = 0;y < 13;y++) {
+				if(turni[x][y] == '\0')
+					turni[x][y] = ' ';
+				printf("%c  %c  ",124,turni[x][y]);
+			}
 			printf("\n");
 /*			if((current = current->next) == NULL)			
 				break;			*/	
