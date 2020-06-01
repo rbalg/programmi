@@ -614,45 +614,41 @@ ali->amb = NULL;
 return(alippa);
 }
 
-int panta_rei()
-{
-	extern struct medico *current;
-	
+struct medico *panta_rei(struct medico *current)
+{	
 	if(current->next != NULL) {
 		current = current->next;
 		++cursor;
-		return(0);
+		return(current);
 	}
 	else
-		return(-1);
+		return(NULL);
 	
 }
-int choose(int c)
+struct medico *choose(struct medico *current,int c)
 {
-	extern struct medico *current;
-
 	if((strchr(current->cap,c)) != NULL)
-		return(0);
+		return(current);
 	else {
 		if(current->next != NULL) {
 			if(++cursor < 13) {
 				current = current->next;
-				choose(c);
+				choose(current,c);
 			}
 			else
-				return(-1);
+				return(NULL);
 		}
 	}
 }
 
-void build_turni(int dnum)
+void build_turni(int dnum, struct medico *current)
 {
 int x, month, used;
-struct medico *this;
-extern struct medico *current;
+struct medico *first, *now;
 
 month = fabs(dnum/100) - 1;
-this = current;
+first = current;
+now = current;
 /*
 	prepara il turno della Stroke
 */
@@ -661,20 +657,22 @@ x = 0;
 while(x < dmesi[month]) {   /* scorre i giorni del mese prescelto per i turni */
 	if((strcmp("lun",mes[x])) == 0) {
 		if((cursor == used) && (used != 0))
-			if(panta_rei() == -1) {
+			if((now = panta_rei(current)) == NULL) {
 				cursor = 0;
 				current = this;
 			}
+		}
 		while((strcmp("SAB",mes[x]) != 0) && (strcmp("FES",mes[x]) != 0)) {
-			if((choose('T')) == 0) {
+			if((now = choose(current,'T')) != NULL) {
 				turni[x++][cursor] = 'T';
 				used = cursor;
 			}				
 			else {
-				current = this;
+				current = first;
 				cursor = 0;
 			}
 		}
+		current = now;
 	}
 	else
 		++x;
@@ -718,7 +716,7 @@ void main()
 {
 char data[15],risp[2],nam[4],c; 
 int x, y, dnum, day1, item;
-extern struct medico *current;
+struct medico *current;
 
 while((item = menu()) != 9) {
 	if(item == 1)
@@ -749,7 +747,7 @@ while((item = menu()) != 9) {
 	else if(item == 4) {
 		current = dutur();
 		cursor = 0;
-		build_turni(dnum);
+		build_turni(dnum,current);
 		printf("\t\t");
 		for(y = 0;y < 13;y++) {
 			strncpy(nam, current->name, 3);
