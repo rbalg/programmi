@@ -644,26 +644,25 @@ struct medico *choose(struct medico *current,int c)
 void build_turni(int dnum, struct medico *current)
 {
 int x, month, used;
-struct medico *first, *now;
+struct medico *first;
 
 month = fabs(dnum/100) - 1;
 first = current;
-now = current;
 /*
 	prepara il turno della Stroke
 */
-used = 0;
+used = -1;
 x = 0;
 while(x < dmesi[month]) {   /* scorre i giorni del mese prescelto per i turni */
 	if((strcmp("lun",mes[x])) == 0) {
-		if((cursor == used) && (used != 0))
-			if((now = panta_rei(current)) == NULL) {
+		if(cursor == used) {
+			if((current = panta_rei(current)) == NULL) {
 				cursor = 0;
-				current = this;
+				current = first;
 			}
 		}
 		while((strcmp("SAB",mes[x]) != 0) && (strcmp("FES",mes[x]) != 0)) {
-			if((now = choose(current,'T')) != NULL) {
+			if((current = choose(current,'T')) != NULL) {
 				turni[x++][cursor] = 'T';
 				used = cursor;
 			}				
@@ -672,44 +671,10 @@ while(x < dmesi[month]) {   /* scorre i giorni del mese prescelto per i turni */
 				cursor = 0;
 			}
 		}
-		current = now;
 	}
 	else
 		++x;
 }
-/*
-for(x = 0;x < dmesi[month];x++) {  
-	while((strcmp("lun",mes[x])) != 0)
-		++x;
-	while((strcmp("SAB",mes[x]) != 0) && (strcmp("FES",mes[x]) != 0)) {
-		if((choose(this,'T')) != NULL)
-			turni[x++][cursor] = 'T';
-		else {
-			this = doctor;
-			cursor = 0;
-		}
-	}
-	if(this->next != NULL) {
-		this = this->next;
-		++cursor;
-	}
-	else {
-		this = doctor;
-		cursor = 0;
-	}
-*/
-
-/*
-	((strcmp("SAB",mes[x]) != 0) && (strcmp("FES",mes[x]) != 0)) {
-		if((choose(this,'T')) != NULL)
-			turni[x++][cursor] = 'T';
-		else
-			this = doctor;
-	}
-	while((strcmp("SAB",mes[x]) != 0) || (strcmp("FES",mes[x]) != 0))
-		++x;
-}
-*/
 }
 
 void main()
@@ -764,8 +729,8 @@ while((item = menu()) != 9) {
 				printf("%c  %c  ",124,turni[x][y]);
 			}
 			printf("\n");
-/*			if((current = current->next) == NULL)			
-				break;			*/	
+			if((current = current->next) == NULL)			
+				break;			
 		}
 		scanf("%s",risp);
 	}
