@@ -132,6 +132,7 @@ N = neuromuscolare
 T = stroke
 E = emg
 B = tossina
+R = reparto
 */
 
 struct medico {
@@ -343,7 +344,7 @@ struct des_amb *stnz, *blgr;
 	
 scacca = malloc(sizeof(struct medico));
 strcpy(scacca->name,"Scaccabarozzi");
-strcpy(scacca->cap,"UVOT");
+strcpy(scacca->cap,"UVOTR");
 scacca->guardie = 21;
 scacca->notti = 15;
 scacca->g_fest = 5;
@@ -363,7 +364,7 @@ sca->amb = NULL;
 
 stanzi = malloc(sizeof(struct medico));
 strcpy(stanzi->name,"Stanzani");
-strcpy(stanzi->cap,"UNE");
+strcpy(stanzi->cap,"UNER");
 stanzi->guardie = 19;
 stanzi->notti = 17;
 stanzi->g_fest = 3;
@@ -388,7 +389,7 @@ stnz->next = blgr;
 	
 sanga = malloc(sizeof(struct medico));
 strcpy(sanga->name,"Sangalli");
-strcpy(sanga->cap,"DCVT");
+strcpy(sanga->cap,"DCVTR");
 sanga->guardie = 22;
 sanga->notti = 19;
 sanga->g_fest = 4;
@@ -408,7 +409,7 @@ san->amb = NULL;
 
 riga = malloc(sizeof(struct medico));
 strcpy(riga->name,"Rigamonti");
-strcpy(riga->cap,"CUNE");
+strcpy(riga->cap,"CUNER");
 riga->guardie = 21;
 riga->notti = 16;
 riga->g_fest = 6;
@@ -428,7 +429,7 @@ rig->amb = NULL;
 
 frencis = malloc(sizeof(struct medico));
 strcpy(frencis->name,"Piamarta");
-strcpy(frencis->cap,"UOPE");
+strcpy(frencis->cap,"UOPER");
 frencis->guardie = 18;
 frencis->notti = 17;
 frencis->g_fest = 5;
@@ -448,7 +449,7 @@ fre->amb = NULL;
 
 mante = malloc(sizeof(struct medico));
 strcpy(mante->name,"Mantero");
-strcpy(frencis->cap,"SN");
+strcpy(frencis->cap,"SNR");
 mante->guardie = 24;
 mante->notti = 23;
 mante->g_fest = 7;
@@ -468,7 +469,7 @@ man->amb = NULL;
 
 fiumix = malloc(sizeof(struct medico));
 strcpy(fiumix->name,"Fiumani");
-strcpy(fiumix->cap,"CU");
+strcpy(fiumix->cap,"CUR");
 fiumix->guardie = 21;
 fiumix->notti = 18;
 fiumix->g_fest = 6;
@@ -488,7 +489,7 @@ fiu->amb = NULL;
 
 costa = malloc(sizeof(struct medico));
 strcpy(costa->name,"Costantino");
-strcpy(costa->cap,"DCUVT");
+strcpy(costa->cap,"DCUVTR");
 costa->guardie = 21;
 costa->notti = 18;
 costa->g_fest = 6;
@@ -508,7 +509,7 @@ cos->amb = NULL;
 
 borel= malloc(sizeof(struct medico));
 strcpy(borel->name,"Borelli");
-strcpy(borel->cap,"DCUP");
+strcpy(borel->cap,"DCUPR");
 borel->guardie = 18;
 borel->notti = 22;
 borel->g_fest = 4;
@@ -528,7 +529,7 @@ bor->amb = NULL;
 
 bianchi = malloc(sizeof(struct medico));
 strcpy(bianchi->name,"Bianchi");
-strcpy(bianchi->cap,"UOP");
+strcpy(bianchi->cap,"UOPR");
 bianchi->guardie = 24;
 bianchi->notti = 14;
 bianchi->g_fest = 4;
@@ -548,7 +549,7 @@ bia->amb = NULL;
 
 basil = malloc(sizeof(struct medico));
 strcpy(basil->name,"Basilico");
-strcpy(basil->cap,"UO");
+strcpy(basil->cap,"UOR");
 basil->guardie = 23;
 basil->notti = 19;
 basil->g_fest = 4;
@@ -568,7 +569,7 @@ bas->amb = NULL;
 
 balge= malloc(sizeof(struct medico));
 strcpy(balge->name,"Balgera");
-strcpy(balge->cap,"USO");
+strcpy(balge->cap,"USOR");
 balge->guardie = 24;
 balge->notti = 22;
 balge->g_fest = 5;
@@ -593,7 +594,7 @@ blgr->next = NULL;
 	
 alippa = malloc(sizeof(struct medico));
 strcpy(alippa->name,"Aliprandi");
-strcpy(alippa->cap,"DCUVT");
+strcpy(alippa->cap,"DCUVTR");
 alippa->guardie = 22;
 alippa->notti = 20;
 alippa->g_fest = 3;
@@ -722,15 +723,17 @@ while((item = menu()) != 9) {
 		}
 		printf("\n");
 		for(x = 0;x < 30;x++) {
-			printf("%d\t  %s = ",x,mes[x]);
+			printf("%d\t  %s = ",x+1,mes[x]);
 			for(y = 0;y < 13;y++) {
 				if(turni[x][y] == '\0')
 					turni[x][y] = ' ';
 				printf("%c  %c  ",124,turni[x][y]);
 			}
 			printf("\n");
+/*
 			if((current = current->next) == NULL)			
 				break;			
+*/
 		}
 		scanf("%s",risp);
 	}
