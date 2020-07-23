@@ -644,7 +644,7 @@ struct medico *choose(struct medico *current,int c)
 
 void build_turni(int dnum, struct medico *current)
 {
-int x, month, used;
+int x, month, used, lune;
 struct medico *first;
 
 month = fabs(dnum/100) - 1;
@@ -656,6 +656,7 @@ used = -1;
 x = 0;
 while(x < dmesi[month]) {   /* scorre i giorni del mese prescelto per i turni */
 	if((strcmp("lun",mes[x])) == 0) {
+		lune = x;
 		if(cursor == used) {
 			if((current = panta_rei(current)) == NULL) {
 				cursor = 0;
@@ -666,11 +667,34 @@ while(x < dmesi[month]) {   /* scorre i giorni del mese prescelto per i turni */
 			if((current = choose(current,'T')) != NULL) {
 				turni[x++][cursor] = 'T';
 				used = cursor;
-			}				
+			}			
 			else {
 				current = first;
 				cursor = 0;
 			}
+		}
+		x = lune;
+		while((strcmp("SAB",mes[x]) != 0) && (strcmp("FES",mes[x]) != 0)) {
+			if((current = choose(current,'R')) != NULL) {
+				if(turni[x][cursor] != 'T') {
+					turni[x][cursor] = 'R';
+					used = cursor;
+					++x;
+				}
+				else {
+					if((++cursor) < 13)
+						current = current->next;
+					else {
+						cursor = 0;
+						current = first;
+					}
+					
+				}
+			}				
+			else {
+				current = first;
+				cursor = 0;
+			}	
 		}
 	}
 	else
