@@ -135,6 +135,15 @@ B = tossina
 R = reparto
 */
 
+struct activity {
+	char id[2];
+	char name[4];
+	int init;       /* giorno settimana in cui inizia */
+	int length;     /* quanti giorni dura */
+	char when[2];   /* M = mattina - P = pomeriggio */
+	struct activity *next;
+};
+
 struct medico {
 	char name[14];
 	char cap[6];
