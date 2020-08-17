@@ -141,6 +141,7 @@ struct activity {
 	int init;       /* giorno settimana in cui inizia */
 	int length;     /* quanti giorni dura */
 	char when[2];   /* M = mattina - P = pomeriggio */
+	int who;        /* 1 per 1 medico - 2 se 2 medici */
 	struct activity *next;
 };
 
@@ -349,11 +350,12 @@ struct activity *lavura()
 {
 struct activity *rep;
 
-strcpy(activity->id,"R");
-strcpy(activity->name"rep");
-activity->init = 0;           /* l'attività inizia il primo giorno, lunedì, cioè 0 */
-activity->length = 5;         /* l'attività dura tutta settimana, per cui il valore è 5 */
-strcpy(activity->when,"M");   /* l'attività inizia la mattina, per cui "M" e non "P" */
+strcpy(rep->id,"R");
+strcpy(rep->name"rep");
+rep->init = 0;           /* l'attività inizia il primo giorno, lunedì, cioè 0 */
+rep->length = 5;         /* l'attività dura tutta settimana, per cui il valore è 5 */
+strcpy(rep->when,"M");   /* l'attività inizia la mattina, per cui "M" e non "P" */
+rep->who = 2;            /* per questa attività servono due medici */
 activity->next = NULL;
 
 return(rep);
