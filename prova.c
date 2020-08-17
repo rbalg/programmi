@@ -345,6 +345,20 @@ c = scanf("%c",&c);
 */
 }
 
+struct activity *lavura()
+{
+struct activity *rep;
+
+strcpy(activity->id,"R");
+strcpy(activity->name"rep");
+activity->init = 0;           /* l'attività inizia il primo giorno, lunedì, cioè 0 */
+activity->length = 5;         /* l'attività dura tutta settimana, per cui il valore è 5 */
+strcpy(activity->when,"M");   /* l'attività inizia la mattina, per cui "M" e non "P" */
+activity->next = NULL;
+
+return(rep);
+}
+	
 struct medico *dutur()
 {
 struct medico *scacca, *stanzi, *sanga, *riga, *frencis, *mante, *fiumix, *costa, *borel, *bianchi, *basil, *balge, *alippa;
