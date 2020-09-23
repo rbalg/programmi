@@ -14,7 +14,7 @@
 #define CYAN    "\033[36m"      /* Cyan */
 #define WHITE   "\033[37m"      /* White */
 
-char turni[30][12];
+char turni[30][13];
 
 char *mesi[] =
 {
@@ -350,13 +350,14 @@ struct activity *lavura()
 {
 struct activity *rep;
 
+rep = malloc(sizeof(struct activity));
 strcpy(rep->id,"R");
-strcpy(rep->name"rep");
+strcpy(rep->name,"rep");
 rep->init = 0;           /* l'attività inizia il primo giorno, lunedì, cioè 0 */
 rep->length = 5;         /* l'attività dura tutta settimana, per cui il valore è 5 */
 strcpy(rep->when,"M");   /* l'attività inizia la mattina, per cui "M" e non "P" */
 rep->who = 2;            /* per questa attività servono due medici */
-activity->next = NULL;
+rep->next = NULL;
 
 return(rep);
 }
@@ -375,7 +376,7 @@ scacca->notti = 15;
 scacca->g_fest = 5;
 scacca->r_fest = 3;
 scacca->n_fest = 4;
-scacca->next = NULL;
+scacca->next = alippa;
 scacca->iwant = sca;
 
 sca = malloc(sizeof(struct desidero));
@@ -642,32 +643,52 @@ return(alippa);
 
 struct medico *panta_rei(struct medico *current)
 {	
-	if(current->next != NULL) {
-		current = current->next;
-		++cursor;
-		return(current);
-	}
-	else
-		return(NULL);
-	
+	current = current->next;
+	if(++cursor == 13)
+		cursor = 0;
+	return(current);	
 }
+
 struct medico *choose(struct medico *current,int c)
 {
 	if((strchr(current->cap,c)) != NULL)
 		return(current);
 	else {
-		if(current->next != NULL) {
-			if(++cursor < 13) {
-				current = current->next;
-				choose(current,c);
+		++cursor;
+		current = current->next;
+		if(cursor == 13)
+			cursor = 0;
+		choose(current,c);
+	}
+}
+
+void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
+{
+	int x,y,month,cap;
+	char firstday[4],c;
+
+	month = fabs(dnum/100);
+	if(strcmp(todo->id,"R") == 0)    /* seleziona l'attivita, R per il giro  */
+		cap = 'R';
+	if(todo->init == 0)
+		strcpy(firstday,"lun");
+	cursor = 0;
+	for(x = 0;x < dmesi[month];x++) {
+		if((strcmp(firstday,mes[x])) == 0) {  /* firstday = giorno inizio */
+			while(strcmp(mes[x],"SAB") != 0) {
+				if((current = choose(current,cap)) != NULL) {
+					if(x < dmesi[month])
+						turni[x++][cursor] = cap;
+					else
+						break;				
+				}	
 			}
-			else
-				return(NULL);
+			current = panta_rei(current);
 		}
 	}
 }
 
-void build_turni(int dnum, struct medico *current)
+void build_turni(int dnum, struct medico *current, struct activity *todo)
 {
 int x, month, used, lune;
 struct medico *first;
@@ -731,7 +752,8 @@ void main()
 {
 char data[15],risp[2],nam[4],c; 
 int x, y, dnum, day1, item;
-struct medico *current;
+struct medico *current, *first;
+struct activity *todo;
 
 while((item = menu()) != 9) {
 	if(item == 1)
@@ -760,10 +782,17 @@ while((item = menu()) != 9) {
 		scanf("%c",&c);
 	}
 	else if(item == 4) {
+		todo = lavura();
 		current = dutur();
+		first = current;
 		cursor = 0;
-		build_turni(dnum,current);
+
+		fa_su_sti_turni(dnum,current,todo);
+/*
+		build_turni(dnum,current,todo);
+*/
 		printf("\t\t");
+		current = first;
 		for(y = 0;y < 13;y++) {
 			strncpy(nam, current->name, 3);
 			nam[3] = '\0';
