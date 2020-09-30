@@ -673,17 +673,20 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 	if(todo->init == 0)
 		strcpy(firstday,"lun");
 	cursor = 0;
-	for(x = 0;x < dmesi[month];x++) {
-		if((strcmp(firstday,mes[x])) == 0) {  /* firstday = giorno inizio */
-			while(strcmp(mes[x],"SAB") != 0) {
-				if((current = choose(current,cap)) != NULL) {
-					if(x < dmesi[month])
-						turni[x++][cursor] = cap;
-					else
-						break;				
-				}	
+	for(y = 0;y < todo->who;y++) {
+		for(x = 0;x < dmesi[month];x++) {
+			if((strcmp(firstday,mes[x])) == 0) {  /* firstday = giorno inizio */
+				while(strcmp(mes[x],"SAB") != 0) {
+					if((current = choose(current,cap)) != NULL) {
+						if(x < dmesi[month])
+							if(turni[x][cursor] == '\0')
+								turni[x++][cursor] = cap;
+						else
+							break;				
+					}	
+				}
+				current = panta_rei(current);
 			}
-			current = panta_rei(current);
 		}
 	}
 }
