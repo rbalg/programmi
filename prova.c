@@ -14,7 +14,8 @@
 #define CYAN    "\033[36m"      /* Cyan */
 #define WHITE   "\033[37m"      /* White */
 
-char turni[30][13];
+char turnim[30][13];
+char turnip[30][13];
 
 char *mesi[] =
 {
@@ -348,7 +349,7 @@ c = scanf("%c",&c);
 
 struct activity *lavura()
 {
-struct activity *rep,*su,*dop,*cef,*u1;
+struct activity *rep,*su,*dop,*cef,*u1,*u2,*cer,*smmer,*sm2;
 
 rep = malloc(sizeof(struct activity));
 strcpy(rep->id,"R");
@@ -371,7 +372,7 @@ su->next = rep;
 dop = malloc(sizeof(struct activity));
 strcpy(dop->id,"D");
 strcpy(dop->name,"dop");
-dop->init = 5;           /* l'attività inizia il quinto giorno, venerdì, cioè 5 */
+dop->init = 4;           /* l'attività inizia il quinto giorno, venerdì, cioè 4 */
 dop->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
 strcpy(dop->when,"M");   /* l'attività inizia la mattina, per cui "M" e non "P" */
 dop->who = 1;            /* per questa attività serve un solo medico */
@@ -380,7 +381,7 @@ dop->next = su;
 cef = malloc(sizeof(struct activity));
 strcpy(cef->id,"C");
 strcpy(cef->name,"cef");
-cef->init = 3;           /* l'attività inizia il terzo giorno, mercoledì, cioè 3 */
+cef->init = 2;           /* l'attività inizia il terzo giorno, mercoledì, cioè 2 */
 cef->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
 strcpy(cef->when,"P");   /* l'attività inizia la mattina, per cui "P" e non "M" */
 cef->who = 1;            /* per questa attività serve un solo medico */
@@ -388,14 +389,50 @@ cef->next = dop;
 
 u1 = malloc(sizeof(struct activity));
 strcpy(u1->id,"U");
-strcpy(cef->name,"uva");
-u1->init = 2;           /* l'attività inizia il secondo giorno, martedì, cioè 2 */
+strcpy(u1->name,"uva");
+u1->init = 1;           /* l'attività inizia il secondo giorno, martedì, cioè 1 */
 u1->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
 strcpy(u1->when,"M");   /* l'attività inizia la mattina, per cui "M" e non "P" */
 u1->who = 1;            /* per questa attività serve un solo medico */
 u1->next = cef;
 
-return(u1);
+u2 = malloc(sizeof(struct activity));
+strcpy(u2->id,"U");
+strcpy(u2->name,"uva");
+u2->init = 4;           /* l'attività inizia il quinto giorno, venerdì, cioè 4 */
+u2->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
+strcpy(u2->when,"P");   /* l'attività inizia il pomeriggio, per cui "P" e non "M" */
+u2->who = 1;            /* per questa attività serve un solo medico */
+u2->next = u1;
+
+cer = malloc(sizeof(struct activity));
+strcpy(cer->id,"V");
+strcpy(cer->name,"cer");
+cer->init = 1;           /* l'attività inizia il secondo giorno, martedì, cioè 1 */
+cer->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
+strcpy(cer->when,"P");   /* l'attività inizia il pomeriggio, per cui "P" e non "M" */
+cer->who = 1;            /* per questa attività serve un solo medico */
+cer->next = u2;
+
+smmer = malloc(sizeof(struct activity));
+strcpy(smmer->id,"S");
+strcpy(smmer->name,"sm");
+smmer->init = 2;           
+smmer->length = 1;      
+strcpy(smmer->when,"M");   
+smmer->who = 1;            
+smmer->next = cer;
+
+sm2 = malloc(sizeof(struct activity));
+strcpy(sm2->id,"S");
+strcpy(sm2->name,"sm");
+sm2->init = 2;           
+sm2->length = 1;         
+strcpy(sm2->when,"P");   
+sm2->who = 1;            
+sm2->next = smmer;
+
+return(sm2);
 }
 	
 struct medico *dutur()
@@ -412,7 +449,7 @@ scacca->notti = 15;
 scacca->g_fest = 5;
 scacca->r_fest = 3;
 scacca->n_fest = 4;
-scacca->next = alippa;
+scacca->next = NULL;
 scacca->iwant = sca;
 
 sca = malloc(sizeof(struct desidero));
@@ -680,31 +717,34 @@ return(alippa);
 struct medico *panta_rei(struct medico *current)
 {	
 	current = current->next;
-	if(++cursor == 13)
+	if(current == NULL) {
 		cursor = 0;
+		return(NULL);
+	}
+	else
+		++cursor;
 	return(current);	
 }
 
-struct medico *choose(struct medico *current,int c)
+struct medico *choose(struct medico *current,char c)
 {
 	if((strchr(current->cap,c)) != NULL)
 		return(current);
 	else {
-		++cursor;
-		current = current->next;
-		if(cursor == 13)
-			cursor = 0;
-		choose(current,c);
+		if((current = panta_rei(current)) != NULL)
+			choose(current,c);
+		else
+			return(NULL);
+		
 	}
 }
 
-int varda_se_el_va_ben(struct medico *current, int length, int x)
+int varda_se_el_va_ben(int length, int x)
 {
 	int u;
-	char c;
 
 	for(u = 0;u < length;u++)
-		if(turni[x + u][cursor] != ' ')
+		if(turnim[x + u][cursor] != ' ')
 			return(1);
 
 	return(0);
@@ -714,7 +754,9 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 {
 	int x,y,z,month,cap;
 	char firstday[4],c;
+	struct medico *first;
 
+	first = current;
 	month = fabs(dnum/100);
 	if(strcmp(todo->id,"R") == 0)    /* seleziona l'attivita, R per il giro  */
 		cap = 'R';
@@ -726,28 +768,39 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 		cap = 'C';
 	else if(strcmp(todo->id,"U") == 0)
 		cap = 'U';
+	else if(strcmp(todo->id,"V") == 0)
+		cap = 'V';
+	else if(strcmp(todo->id,"S") == 0)
+		cap = 'S';
 	if(todo->init == 0)
 		strcpy(firstday,"lun");
-	else if(todo->init == 5)
+	else if(todo->init == 4)
 		strcpy(firstday,"ven");
-	else if(todo->init == 3)
-		strcpy(firstday,"mer");
 	else if(todo->init == 2)
+		strcpy(firstday,"mer");
+	else if(todo->init == 1)
 		strcpy(firstday,"mar");
 	cursor = 0;
 	for(y = 0;y < todo->who;y++) {
 		for(x = 0;x < dmesi[month];x++) {
 			if((strcmp(firstday,mes[x])) == 0) {  /* firstday = giorno inizio */
+				printf("current->cap = %s cap = %d\n",current->cap,cap);
 				if((current = choose(current,cap)) != NULL) {
-					if((varda_se_el_va_ben(current,todo->length,x)) == 0) {
+					if((varda_se_el_va_ben(todo->length,x)) == 0) {
 						for(z = 0;z < todo->length;z++)
 							if(x < dmesi[month])
-								turni[x++][cursor] = cap;
+								if((strcmp(todo->when,"M")) == 0)
+									turnim[x++][cursor] = cap;
+								else
+									turnip[x++][cursor] = cap;
+								
+						current = panta_rei(current);
 					}
 					else
 						current = panta_rei(current);
 				}
-				current = panta_rei(current);
+				else
+					current = first;			
 			}
 		}
 	}
@@ -758,7 +811,7 @@ void main()
 char data[15],risp[2],nam[4],c; 
 int x, y, dnum, day1, item;
 struct medico *current, *first;
-struct activity *todo, *dafa;
+struct activity *todo;
 
 while((item = menu()) != 9) {
 	if(item == 1)
@@ -788,13 +841,16 @@ while((item = menu()) != 9) {
 	}
 	else if(item == 4) {
 		todo = lavura();
-		current = dutur();
+		current = dutur();		
 		first = current;
 		cursor = 0;
 		for(x = 0;x < 30;x++)
-			for(y = 0;y < 13;y++)
-				turni[x][y] = ' ';
+			for(y = 0;y < 13;y++) {
+				turnim[x][y] = ' ';
+				turnip[x][y] = ' ';
+			}
 		do {
+			current = first;
 			fa_su_sti_turni(dnum,current,todo);
 			todo = todo->next;
 		} while(todo != NULL);
@@ -803,16 +859,18 @@ while((item = menu()) != 9) {
 		for(y = 0;y < 13;y++) {
 			strncpy(nam, current->name, 3);
 			nam[3] = '\0';
-			printf("%c %s ",124,nam);    /* 124 è il codice per il trattino verticale */
+			printf("%c %s  ",124,nam);    /* 124 è il codice per il trattino verticale */
 			current = current->next;
 		}
 		printf("\n");
 		for(x = 0;x < 30;x++) {
 			printf("%d\t  %s = ",x+1,mes[x]);
 			for(y = 0;y < 13;y++) {
-				if(turni[x][y] == '\0')
-					turni[x][y] = ' ';
-				printf("%c  %c  ",124,turni[x][y]);
+				if(turnim[x][y] == '\0')
+					turnim[x][y] = ' ';
+				else if(turnip[x][y] == '\0')
+					turnip[x][y] = ' ';
+				printf("%c  %c%c  ",124,turnim[x][y],turnip[x][y]);
 			}
 			printf("\n");
 /*
