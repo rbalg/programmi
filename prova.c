@@ -147,6 +147,7 @@ struct activity {
 };
 
 struct medico {
+	int id;
 	char name[14];
 	char cap[6];
 	int guardie;
@@ -351,24 +352,6 @@ struct activity *lavura()
 {
 struct activity *rep,*su,*dop,*cef,*u1,*u2,*cer,*smmer,*sm2;
 
-rep = malloc(sizeof(struct activity));
-rep->id = 'R';
-strcpy(rep->name,"rep");
-rep->init = 0;           /* l'attività inizia il primo giorno, lunedì, cioè 0 */
-rep->length = 5;         /* l'attività dura tutta settimana, per cui il valore è 5 */
-strcpy(rep->when,"M");   /* l'attività inizia la mattina, per cui "M" e non "P" */
-rep->who = 2;            /* per questa attività servono due medici */
-rep->next = NULL;
-
-su = malloc(sizeof(struct activity));
-su->id = 'T';
-strcpy(su->name,"su");
-su->init = 0;           /* l'attività inizia il primo giorno, lunedì, cioè 0 */
-su->length = 5;         /* l'attività dura tutta settimana, per cui il valore è 5 */
-strcpy(su->when,"M");   /* l'attività inizia la mattina, per cui "M" e non "P" */
-su->who = 1;            /* per questa attività serve un medico */
-su->next = rep;
-
 dop = malloc(sizeof(struct activity));
 dop->id = 'D';
 strcpy(dop->name,"dop");
@@ -376,7 +359,7 @@ dop->init = 4;           /* l'attività inizia il quinto giorno, venerdì, cioè
 dop->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
 strcpy(dop->when,"M");   /* l'attività inizia la mattina, per cui "M" e non "P" */
 dop->who = 1;            /* per questa attività serve un solo medico */
-dop->next = su;
+dop->next = NULL;
 
 cef = malloc(sizeof(struct activity));
 cef->id = 'C';
@@ -421,7 +404,7 @@ smmer->init = 2;
 smmer->length = 1;      
 strcpy(smmer->when,"M");   
 smmer->who = 1;            
-smmer->next = cer;
+smmer->next = NULL;
 
 sm2 = malloc(sizeof(struct activity));
 sm2->id = 'S';
@@ -430,9 +413,27 @@ sm2->init = 2;
 sm2->length = 1;         
 strcpy(sm2->when,"P");   
 sm2->who = 1;            
-sm2->next = NULL;
+sm2->next = smmer;
 
-return(sm2);
+su = malloc(sizeof(struct activity));
+su->id = 'T';
+strcpy(su->name,"su");
+su->init = 0;           /* l'attività inizia il primo giorno, lunedì, cioè 0 */
+su->length = 5;         /* l'attività dura tutta settimana, per cui il valore è 5 */
+strcpy(su->when,"M");   /* l'attività inizia la mattina, per cui "M" e non "P" */
+su->who = 1;            /* per questa attività serve un medico */
+su->next = sm2;
+
+rep = malloc(sizeof(struct activity));
+rep->id = 'R';
+strcpy(rep->name,"rep");
+rep->init = 0;           /* l'attività inizia il primo giorno, lunedì, cioè 0 */
+rep->length = 5;         /* l'attività dura tutta settimana, per cui il valore è 5 */
+strcpy(rep->when,"M");   /* l'attività inizia la mattina, per cui "M" e non "P" */
+rep->who = 2;            /* per questa attività servono due medici */
+rep->next = su;
+
+return(rep);
 }
 	
 struct medico *dutur()
@@ -442,6 +443,7 @@ struct desidero *sca, *sta, *san, *rig, *fre, *man, *fiu, *cos, *bor, *bia, *bas
 struct des_amb *stnz, *blgr;
 	
 scacca = malloc(sizeof(struct medico));
+scacca->id = 12;
 strcpy(scacca->name,"Scaccabarozzi");
 strcpy(scacca->cap,"UVOTR");
 scacca->guardie = 21;
@@ -462,6 +464,7 @@ strcpy(sca->notti,"");
 sca->amb = NULL;
 
 stanzi = malloc(sizeof(struct medico));
+stanzi->id = 11;
 strcpy(stanzi->name,"Stanzani");
 strcpy(stanzi->cap,"UNER");
 stanzi->guardie = 19;
@@ -487,6 +490,7 @@ strcpy(stnz->day,"28");
 stnz->next = blgr;
 	
 sanga = malloc(sizeof(struct medico));
+sanga->id = 10;
 strcpy(sanga->name,"Sangalli");
 strcpy(sanga->cap,"DCVTR");
 sanga->guardie = 22;
@@ -507,6 +511,7 @@ strcpy(san->notti,"");
 san->amb = NULL;
 
 riga = malloc(sizeof(struct medico));
+riga->id = 9;
 strcpy(riga->name,"Rigamonti");
 strcpy(riga->cap,"CUNER");
 riga->guardie = 21;
@@ -527,6 +532,7 @@ strcpy(rig->notti,"2-3-20");
 rig->amb = NULL;
 
 frencis = malloc(sizeof(struct medico));
+frencis->id = 8;
 strcpy(frencis->name,"Piamarta");
 strcpy(frencis->cap,"UOPER");
 frencis->guardie = 18;
@@ -547,8 +553,9 @@ strcpy(fre->notti,"5");
 fre->amb = NULL;
 
 mante = malloc(sizeof(struct medico));
+mante->id = 7;
 strcpy(mante->name,"Mantero");
-strcpy(frencis->cap,"SNR");
+strcpy(mante->cap,"SNR");
 mante->guardie = 24;
 mante->notti = 23;
 mante->g_fest = 7;
@@ -567,6 +574,7 @@ strcpy(man->notti,"8");
 man->amb = NULL;
 
 fiumix = malloc(sizeof(struct medico));
+fiumix->id = 6;
 strcpy(fiumix->name,"Fiumani");
 strcpy(fiumix->cap,"CUR");
 fiumix->guardie = 21;
@@ -587,6 +595,7 @@ strcpy(fiu->notti,"26");
 fiu->amb = NULL;
 
 costa = malloc(sizeof(struct medico));
+costa->id = 5;
 strcpy(costa->name,"Costantino");
 strcpy(costa->cap,"DCUVTR");
 costa->guardie = 21;
@@ -607,6 +616,7 @@ strcpy(cos->notti,"");
 cos->amb = NULL;
 
 borel= malloc(sizeof(struct medico));
+borel->id = 4;
 strcpy(borel->name,"Borelli");
 strcpy(borel->cap,"DCUPR");
 borel->guardie = 18;
@@ -627,6 +637,7 @@ strcpy(bor->notti,"");
 bor->amb = NULL;
 
 bianchi = malloc(sizeof(struct medico));
+bianchi->id = 3;
 strcpy(bianchi->name,"Bianchi");
 strcpy(bianchi->cap,"UOPR");
 bianchi->guardie = 24;
@@ -647,6 +658,7 @@ strcpy(bia->notti,"13");
 bia->amb = NULL;
 
 basil = malloc(sizeof(struct medico));
+basil->id = 2;
 strcpy(basil->name,"Basilico");
 strcpy(basil->cap,"UOR");
 basil->guardie = 23;
@@ -667,6 +679,7 @@ strcpy(bas->notti,"");
 bas->amb = NULL;
 
 balge= malloc(sizeof(struct medico));
+balge->id = 1;
 strcpy(balge->name,"Balgera");
 strcpy(balge->cap,"USOR");
 balge->guardie = 24;
@@ -692,6 +705,7 @@ strcpy(blgr->day,"14-28");
 blgr->next = NULL;
 	
 alippa = malloc(sizeof(struct medico));
+alippa->id = 0;
 strcpy(alippa->name,"Aliprandi");
 strcpy(alippa->cap,"DCUVTR");
 alippa->guardie = 22;
@@ -717,13 +731,10 @@ return(alippa);
 struct medico *panta_rei(struct medico *current)
 {	
 	current = current->next;
-	if(current == NULL) {
-		cursor = 0;
+	if(current == NULL)
 		return(NULL);
-	}
 	else
-		++cursor;
-	return(current);	
+		return(current);	
 }
 
 struct medico *choose(struct medico *current,char c)
@@ -739,14 +750,29 @@ struct medico *choose(struct medico *current,char c)
 	}
 }
 
-int varda_se_el_va_ben(int length, int x)
+struct medico *choose2(struct medico *current,char c)
+{
+	do {
+		if((strchr(current->cap,c)) != NULL)
+			return(current);
+		else
+			current = current->next;
+	} while(current != NULL);
+}
+
+int varda_se_el_va_ben(int length, char when[2], int x)
 {
 	int u;
 
-	for(u = 0;u < length;u++)
-		if(turnim[x + u][cursor] != ' ')
-			return(1);
-
+	if(strcmp(when,"M") == 0) {
+		for(u = 0;u < length;u++)
+			if(turnim[x + u][cursor] != ' ')
+				return(1);
+	}
+	else
+		for(u = 0;u < length;u++)
+			if(turnip[x + u][cursor] != ' ')
+				return(1);
 	return(0);
 }
 
@@ -766,27 +792,30 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 		strcpy(firstday,"mer");
 	else if(todo->init == 1)
 		strcpy(firstday,"mar");
-	cursor = 0;
-	for(y = 0;y < todo->who;y++) {
-		for(x = 0;x < dmesi[month];x++) {
-			if((strcmp(firstday,mes[x])) == 0) {  /* firstday = giorno inizio */
-				if((current = choose(current,todo->id)) != NULL) {
-					if((varda_se_el_va_ben(todo->length,x)) == 0) {
-						for(z = 0;z < todo->length;z++)
-							if(x < dmesi[month])
-								if((strcmp(todo->when,"M")) == 0)
-									turnim[x++][cursor] = todo->id;
-								else
-									turnip[x++][cursor] = todo->id;
-								
-						current = panta_rei(current);
-					}
-					else
-						current = panta_rei(current);
+	for(x = 0;x < dmesi[month];x++) {
+		if((strcmp(firstday,mes[x])) == 0) {  /* firstday = giorno inizio */
+			if((current = choose2(current,todo->id)) != NULL) {
+				printf("current = %s %c\n",current->name,todo->id);
+				cursor = current->id;
+				while((varda_se_el_va_ben(todo->length,todo->when,x)) == 1) {
+					current = panta_rei(current);
+					cursor = current->id;
 				}
-				else
-					current = first;			
+				printf("current = %s %d\n",current->name, cursor);
+				for(z = 0;z < todo->length;z++) {
+					if(x < dmesi[month]) {
+						if((strcmp(todo->when,"M")) == 0)
+							turnim[x++][cursor] = todo->id;
+						else
+							turnip[x++][cursor] = todo->id;
+					}
+				}	
+				current = panta_rei(current);		
 			}
+			else {
+				current = first;
+				--x;          /* serve a recuperare il giorno dell'attività */
+			}			
 		}
 	}
 }
@@ -829,14 +858,16 @@ while((item = menu()) != 9) {
 		current = dutur();		
 		first = current;
 		cursor = 0;
-		for(x = 0;x < 30;x++)
+		for(x = 0;x < 30;x++) {
 			for(y = 0;y < 13;y++) {
 				turnim[x][y] = ' ';
 				turnip[x][y] = ' ';
 			}
+		}
 		do {
 			current = first;
-			fa_su_sti_turni(dnum,current,todo);
+			for(x = 0;x < todo->who;x++)               /* who = numero medici */
+				fa_su_sti_turni(dnum,current,todo);
 			todo = todo->next;
 		} while(todo != NULL);
 		printf("\t\t");
