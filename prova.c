@@ -404,7 +404,7 @@ smmer->init = 2;
 smmer->length = 1;      
 strcpy(smmer->when,"M");   
 smmer->who = 1;            
-smmer->next = NULL;
+smmer->next = cer;
 
 sm2 = malloc(sizeof(struct activity));
 sm2->id = 'S';
@@ -737,19 +737,6 @@ struct medico *panta_rei(struct medico *current)
 		return(current);	
 }
 
-struct medico *choose(struct medico *current,char c)
-{
-	if((strchr(current->cap,c)) != NULL)
-		return(current);
-	else {
-		if((current = panta_rei(current)) != NULL)
-			choose(current,c);
-		else
-			return(NULL);
-		
-	}
-}
-
 struct medico *choose2(struct medico *current,char c)
 {
 	do {
@@ -758,6 +745,7 @@ struct medico *choose2(struct medico *current,char c)
 		else
 			current = current->next;
 	} while(current != NULL);
+	return(NULL);
 }
 
 int varda_se_el_va_ben(int length, char when[2], int x)
@@ -792,30 +780,30 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 		strcpy(firstday,"mer");
 	else if(todo->init == 1)
 		strcpy(firstday,"mar");
+	printf("todo->id = %c\n",todo->id);
 	for(x = 0;x < dmesi[month];x++) {
 		if((strcmp(firstday,mes[x])) == 0) {  /* firstday = giorno inizio */
-			if((current = choose2(current,todo->id)) != NULL) {
-				printf("current = %s %c\n",current->name,todo->id);
+/*			printf("mes[%d] = %d\n", x, x);   */
+			do {
+				if((current = panta_rei(current)) == NULL)
+					current = first;
 				cursor = current->id;
-				while((varda_se_el_va_ben(todo->length,todo->when,x)) == 1) {
-					current = panta_rei(current);
-					cursor = current->id;
+				current = choose2(current,todo->id);
+				if(current == NULL){
+					current = first;
+					current = choose2(current,todo->id);
 				}
-				printf("current = %s %d\n",current->name, cursor);
-				for(z = 0;z < todo->length;z++) {
-					if(x < dmesi[month]) {
-						if((strcmp(todo->when,"M")) == 0)
-							turnim[x++][cursor] = todo->id;
-						else
-							turnip[x++][cursor] = todo->id;
-					}
-				}	
-				current = panta_rei(current);		
+				cursor = current->id;
+			} while((varda_se_el_va_ben(todo->length,todo->when,x)) == 1);
+			printf("current = %s %d %d\n",current->name, x, cursor);      
+			for(z = 0;z < todo->length;z++) {
+				if(x < dmesi[month]) {
+					if((strcmp(todo->when,"M")) == 0)
+						turnim[x++][cursor] = todo->id;
+					else
+						turnip[x++][cursor] = todo->id;
+				}
 			}
-			else {
-				current = first;
-				--x;          /* serve a recuperare il giorno dell'attività */
-			}			
 		}
 	}
 }
