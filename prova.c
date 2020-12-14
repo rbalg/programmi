@@ -350,7 +350,34 @@ c = scanf("%c",&c);
 
 struct activity *lavura()
 {
-struct activity *rep,*su,*dop,*cef,*u1,*u2,*cer,*smmer,*sm2;
+struct activity *rep,*su,*dop,*cef,*u1,*u2,*cer,*smmer,*sm2,*pd,*nm,*ep;
+
+ep = malloc(sizeof(struct activity));
+ep->id = 'E';
+strcpy(ep->name,"epi");
+ep->init = 2;           /* l'attività inizia il terzo giorno, mercoledì, cioè 2 */
+ep->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
+strcpy(ep->when,"P");   /* l'attività inizia il pomeriggio, per cui "P" e non "M" */
+ep->who = 1;            /* per questa attività serve un solo medico */
+ep->next = NULL;
+
+nm = malloc(sizeof(struct activity));
+nm->id = 'N';
+strcpy(nm->name,"nm");
+nm->init = 4;           /* l'attività inizia il quinto giorno, venerdì, cioè 4 */
+nm->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
+strcpy(nm->when,"P");   /* l'attività inizia il pomeriggio, per cui "P" e non "M" */
+nm->who = 1;            /* per questa attività serve un solo medico */
+nm->next = ep;
+
+pd = malloc(sizeof(struct activity));
+pd->id = 'P';
+strcpy(pd->name,"pd");
+pd->init = 4;           /* l'attività inizia il quarto giorno, giovedì, cioè 3 */
+pd->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
+strcpy(pd->when,"P");   /* l'attività inizia il pomeriggio, per cui "P" e non "M" */
+pd->who = 1;            /* per questa attività serve un solo medico */
+pd->next = nm;
 
 dop = malloc(sizeof(struct activity));
 dop->id = 'D';
@@ -359,7 +386,7 @@ dop->init = 4;           /* l'attività inizia il quinto giorno, venerdì, cioè
 dop->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
 strcpy(dop->when,"M");   /* l'attività inizia la mattina, per cui "M" e non "P" */
 dop->who = 1;            /* per questa attività serve un solo medico */
-dop->next = NULL;
+dop->next = pd;
 
 cef = malloc(sizeof(struct activity));
 cef->id = 'C';
@@ -534,7 +561,7 @@ rig->amb = NULL;
 frencis = malloc(sizeof(struct medico));
 frencis->id = 8;
 strcpy(frencis->name,"Piamarta");
-strcpy(frencis->cap,"UOPER");
+strcpy(frencis->cap,"UOPR");
 frencis->guardie = 18;
 frencis->notti = 17;
 frencis->g_fest = 5;
@@ -618,7 +645,7 @@ cos->amb = NULL;
 borel= malloc(sizeof(struct medico));
 borel->id = 4;
 strcpy(borel->name,"Borelli");
-strcpy(borel->cap,"DCUPR");
+strcpy(borel->cap,"DCUPER");
 borel->guardie = 18;
 borel->notti = 22;
 borel->g_fest = 4;
@@ -766,7 +793,7 @@ int varda_se_el_va_ben(int length, char when[2], int x)
 
 void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 {
-	int x,y,z,month,cap;
+	int x,y,z,month,cap,result;
 	char firstday[4],c;
 	struct medico *first;
 
@@ -776,6 +803,8 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 		strcpy(firstday,"lun");
 	else if(todo->init == 4)
 		strcpy(firstday,"ven");
+	else if(todo->init == 3)
+		strcpy(firstday,"gio");
 	else if(todo->init == 2)
 		strcpy(firstday,"mer");
 	else if(todo->init == 1)
@@ -785,16 +814,17 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 		if((strcmp(firstday,mes[x])) == 0) {  /* firstday = giorno inizio */
 /*			printf("mes[%d] = %d\n", x, x);   */
 			do {
-				if((current = panta_rei(current)) == NULL)
-					current = first;
 				cursor = current->id;
-				current = choose2(current,todo->id);
-				if(current == NULL){
+				if((current = choose2(current,todo->id)) == NULL) {
 					current = first;
 					current = choose2(current,todo->id);
 				}
 				cursor = current->id;
-			} while((varda_se_el_va_ben(todo->length,todo->when,x)) == 1);
+				result = varda_se_el_va_ben(todo->length,todo->when,x);
+				if(result == 1)
+					if((current = panta_rei(current)) == NULL)
+						current = first;
+			} while(result == 1);
 			printf("current = %s %d %d\n",current->name, x, cursor);      
 			for(z = 0;z < todo->length;z++) {
 				if(x < dmesi[month]) {
@@ -804,6 +834,8 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 						turnip[x++][cursor] = todo->id;
 				}
 			}
+			if((current = panta_rei(current)) == NULL)
+					current = first;
 		}
 	}
 }
