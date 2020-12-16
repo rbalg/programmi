@@ -131,7 +131,8 @@ O = oncologia
 P = parkinson
 N = neuromuscolare
 T = stroke
-E = emg
+M = emg
+E = epilessia
 B = tossina
 R = reparto
 */
@@ -350,7 +351,80 @@ c = scanf("%c",&c);
 
 struct activity *lavura()
 {
-struct activity *rep,*su,*dop,*cef,*u1,*u2,*cer,*smmer,*sm2,*pd,*nm,*ep;
+struct activity *rep,*su,*dop,*cef,*u1,*u2,*cer,*smmer,*sm2,*pd,*nm,*ep,*emg1,*emg2;
+struct activity *emg3,*emg4,*emg5,*emg6,*emg7,*amb;
+
+amb = malloc(sizeof(struct activity));
+amb->id = 'A';
+strcpy(amb->name,"amb");
+amb->init = 0;   
+amb->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
+strcpy(amb->when,"P");   
+amb->who = 1;            /* per questa attività serve un solo medico */
+amb->next = NULL;
+
+emg7 = malloc(sizeof(struct activity));
+emg7->id = 'M';
+strcpy(emg7->name,"emg");
+emg7->init = 4;   
+emg7->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
+strcpy(emg7->when,"M");   
+emg7->who = 1;            /* per questa attività serve un solo medico */
+emg7->next = amb;
+
+emg6 = malloc(sizeof(struct activity));
+emg6->id = 'M';
+strcpy(emg6->name,"emg");
+emg6->init = 3;   
+emg6->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
+strcpy(emg6->when,"P");   
+emg6->who = 1;            /* per questa attività serve un solo medico */
+emg6->next = emg7;
+
+emg5 = malloc(sizeof(struct activity));
+emg5->id = 'M';
+strcpy(emg5->name,"emg");
+emg5->init = 3;   
+emg5->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
+strcpy(emg5->when,"M");   
+emg5->who = 1;            /* per questa attività serve un solo medico */
+emg5->next = emg6;
+
+emg4 = malloc(sizeof(struct activity));
+emg4->id = 'M';
+strcpy(emg4->name,"emg");
+emg4->init = 1;   
+emg4->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
+strcpy(emg4->when,"P");   
+emg4->who = 1;            /* per questa attività serve un solo medico */
+emg4->next = emg5;
+
+emg3 = malloc(sizeof(struct activity));
+emg3->id = 'M';
+strcpy(emg3->name,"emg");
+emg3->init = 1;
+emg3->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
+strcpy(emg3->when,"M");   
+emg3->who = 1;            /* per questa attività serve un solo medico */
+emg3->next = emg4;
+
+emg2 = malloc(sizeof(struct activity));
+emg2->id = 'M';
+strcpy(emg2->name,"emg");
+emg2->init = 0;         /* l'attività inizia il primo giorno, lunedì, cioè 0 */
+emg2->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
+strcpy(emg2->when,"P");   
+emg2->who = 1;            /* per questa attività serve un solo medico */
+emg2->next = emg3;
+
+emg1 = malloc(sizeof(struct activity));
+emg1->id = 'M';
+strcpy(emg1->name,"emg");
+emg1->init = 0;         /* l'attività inizia il primo giorno, lunedì, cioè 0 */
+emg1->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
+strcpy(emg1->when,"M");   
+emg1->who = 1;            /* per questa attività serve un solo medico */
+emg1->next = emg2;
 
 ep = malloc(sizeof(struct activity));
 ep->id = 'E';
@@ -359,7 +433,7 @@ ep->init = 2;           /* l'attività inizia il terzo giorno, mercoledì, cioè
 ep->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
 strcpy(ep->when,"P");   /* l'attività inizia il pomeriggio, per cui "P" e non "M" */
 ep->who = 1;            /* per questa attività serve un solo medico */
-ep->next = NULL;
+ep->next = emg1;
 
 nm = malloc(sizeof(struct activity));
 nm->id = 'N';
@@ -472,7 +546,7 @@ struct des_amb *stnz, *blgr;
 scacca = malloc(sizeof(struct medico));
 scacca->id = 12;
 strcpy(scacca->name,"Scaccabarozzi");
-strcpy(scacca->cap,"UVOTR");
+strcpy(scacca->cap,"AUVOTR");
 scacca->guardie = 21;
 scacca->notti = 15;
 scacca->g_fest = 5;
@@ -493,7 +567,7 @@ sca->amb = NULL;
 stanzi = malloc(sizeof(struct medico));
 stanzi->id = 11;
 strcpy(stanzi->name,"Stanzani");
-strcpy(stanzi->cap,"UNER");
+strcpy(stanzi->cap,"AUNEMR");
 stanzi->guardie = 19;
 stanzi->notti = 17;
 stanzi->g_fest = 3;
@@ -519,7 +593,7 @@ stnz->next = blgr;
 sanga = malloc(sizeof(struct medico));
 sanga->id = 10;
 strcpy(sanga->name,"Sangalli");
-strcpy(sanga->cap,"DCVTR");
+strcpy(sanga->cap,"ADCVTR");
 sanga->guardie = 22;
 sanga->notti = 19;
 sanga->g_fest = 4;
@@ -540,7 +614,7 @@ san->amb = NULL;
 riga = malloc(sizeof(struct medico));
 riga->id = 9;
 strcpy(riga->name,"Rigamonti");
-strcpy(riga->cap,"CUNER");
+strcpy(riga->cap,"ACUNEMR");
 riga->guardie = 21;
 riga->notti = 16;
 riga->g_fest = 6;
@@ -561,7 +635,7 @@ rig->amb = NULL;
 frencis = malloc(sizeof(struct medico));
 frencis->id = 8;
 strcpy(frencis->name,"Piamarta");
-strcpy(frencis->cap,"UOPR");
+strcpy(frencis->cap,"AUOMPR");
 frencis->guardie = 18;
 frencis->notti = 17;
 frencis->g_fest = 5;
@@ -582,7 +656,7 @@ fre->amb = NULL;
 mante = malloc(sizeof(struct medico));
 mante->id = 7;
 strcpy(mante->name,"Mantero");
-strcpy(mante->cap,"SNR");
+strcpy(mante->cap,"ASNR");
 mante->guardie = 24;
 mante->notti = 23;
 mante->g_fest = 7;
@@ -603,7 +677,7 @@ man->amb = NULL;
 fiumix = malloc(sizeof(struct medico));
 fiumix->id = 6;
 strcpy(fiumix->name,"Fiumani");
-strcpy(fiumix->cap,"CUR");
+strcpy(fiumix->cap,"ACUR");
 fiumix->guardie = 21;
 fiumix->notti = 18;
 fiumix->g_fest = 6;
@@ -624,7 +698,7 @@ fiu->amb = NULL;
 costa = malloc(sizeof(struct medico));
 costa->id = 5;
 strcpy(costa->name,"Costantino");
-strcpy(costa->cap,"DCUVTR");
+strcpy(costa->cap,"ADCUVTR");
 costa->guardie = 21;
 costa->notti = 18;
 costa->g_fest = 6;
@@ -645,7 +719,7 @@ cos->amb = NULL;
 borel= malloc(sizeof(struct medico));
 borel->id = 4;
 strcpy(borel->name,"Borelli");
-strcpy(borel->cap,"DCUPER");
+strcpy(borel->cap,"ADCUPER");
 borel->guardie = 18;
 borel->notti = 22;
 borel->g_fest = 4;
@@ -666,7 +740,7 @@ bor->amb = NULL;
 bianchi = malloc(sizeof(struct medico));
 bianchi->id = 3;
 strcpy(bianchi->name,"Bianchi");
-strcpy(bianchi->cap,"UOPR");
+strcpy(bianchi->cap,"AUOPR");
 bianchi->guardie = 24;
 bianchi->notti = 14;
 bianchi->g_fest = 4;
@@ -687,7 +761,7 @@ bia->amb = NULL;
 basil = malloc(sizeof(struct medico));
 basil->id = 2;
 strcpy(basil->name,"Basilico");
-strcpy(basil->cap,"UOR");
+strcpy(basil->cap,"AUOR");
 basil->guardie = 23;
 basil->notti = 19;
 basil->g_fest = 4;
@@ -708,7 +782,7 @@ bas->amb = NULL;
 balge= malloc(sizeof(struct medico));
 balge->id = 1;
 strcpy(balge->name,"Balgera");
-strcpy(balge->cap,"USOR");
+strcpy(balge->cap,"AUSOR");
 balge->guardie = 24;
 balge->notti = 22;
 balge->g_fest = 5;
@@ -734,7 +808,7 @@ blgr->next = NULL;
 alippa = malloc(sizeof(struct medico));
 alippa->id = 0;
 strcpy(alippa->name,"Aliprandi");
-strcpy(alippa->cap,"DCUVTR");
+strcpy(alippa->cap,"ADCUVTR");
 alippa->guardie = 22;
 alippa->notti = 20;
 alippa->g_fest = 3;
