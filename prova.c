@@ -146,7 +146,7 @@ struct activity {
 	char name[4];
 	int init;       /* giorno settimana in cui inizia */
 	int length;     /* quanti giorni dura */
-	char when[2];   /* M = mattina - P = pomeriggio */
+	char when[2];   /* M = mattina - P = pomeriggio - N = notte */
 	int who;        /* 1 per 1 medico - 2 se 2 medici */
 	struct activity *next;
 };
@@ -365,7 +365,7 @@ nven->altro = FALSE;
 strcpy(nven->name,"not");
 nven->init = 4;   
 nven->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(nven->when,"M");   
+strcpy(nven->when,"N");   
 nven->who = 1;            /* per questa attività serve un solo medico */
 nven->next = NULL;
 
@@ -375,7 +375,7 @@ ngio->altro = FALSE;
 strcpy(ngio->name,"not");
 ngio->init = 3;   
 ngio->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(ngio->when,"M");   
+strcpy(ngio->when,"N");   
 ngio->who = 1;            /* per questa attività serve un solo medico */
 ngio->next = nven;
 
@@ -385,7 +385,7 @@ nmer->altro = FALSE;
 strcpy(nmer->name,"not");
 nmer->init = 2;   
 nmer->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(nmer->when,"M");   
+strcpy(nmer->when,"N");   
 nmer->who = 1;            /* per questa attività serve un solo medico */
 nmer->next = ngio;
 
@@ -395,7 +395,7 @@ nmar->altro = FALSE;
 strcpy(nmar->name,"not");
 nmar->init = 1;   
 nmar->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(nmar->when,"M");   
+strcpy(nmar->when,"N");   
 nmar->who = 1;            /* per questa attività serve un solo medico */
 nmar->next = nmer;
 
@@ -405,7 +405,7 @@ nlun->altro = FALSE;
 strcpy(nlun->name,"not");
 nlun->init = 0;   
 nlun->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(nlun->when,"M");   
+strcpy(nlun->when,"N");   /* si svolge di notte */
 nlun->who = 1;            /* per questa attività serve un solo medico */
 nlun->next = nmar;
 
@@ -983,6 +983,12 @@ int varda_se_el_va_ben(int length, char when[2], int x)
 			if(turnim[x + u][cursor] != ' ')
 				return(1);
 	}
+	else if(strcmp(when,"N") == 0) {
+		if(turnim[x][cursor] != ' ')
+			return(1);
+		if(turnip[x][cursor] != ' ')
+			return(1);
+	}
 	else
 		for(u = 0;u < length;u++)
 			if(turnip[x + u][cursor] != ' ')
@@ -1003,14 +1009,14 @@ int check_guardie(struct medico *current)
 	return(0);
 }
 
-void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
+int fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 {
-	int x,y,z,month,cap,result,counter;
+	int x,y,z,month,cap,result,counter,found,written;
 	char firstday[4],c;
 	struct medico *first;
 
 	first = current;
-	counter = 0; 
+	counter = found = written = 0; 
 	month = fabs(dnum/100);
 	if(todo->init == 0)
 		strcpy(firstday,"lun");
@@ -1024,6 +1030,7 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 		strcpy(firstday,"mar");
 	for(x = 0;x < dmesi[month];x++) {
 		if((strcmp(firstday,mes[x])) == 0) {  /* firstday = giorno inizio */
+			++found;
 			do {
 				cursor = current->id;
 				while((choose2(current,todo->id)) == 1) {
@@ -1041,11 +1048,14 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 					if(todo->id == 'G') {                                 /* controlla che le guardie non siano troppo vicine */
 						if((check_guardie(current)) == 0) {
 							++current->guardie;
-							for(y = x - 2;y < x + 2;y++)
+							for(y = x - 2;y < x + 2;y++) {
 								if(turnim[y][cursor] == 'G') {
 									result = 1;
 									--current->guardie;
 								}
+							}
+							if(turnip[x][cursor] != ' ')
+							result = 1;
 						}
 						else
 							result = 1;
@@ -1063,9 +1073,10 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 						}
 						
 					}
-					else if(todo->id == 'n') {
-						if(turnim[x + 1][cursor] != ' ')
+					else if(todo->id == 'N')                               /* impedisce 2 settimane di giro */
+						 if(turnip[x][cursor] != ' ')
 							result = 1;
+					else if(todo->id == 'n') {
 						if(x > 3) {
 							for(y = x - 3;y < x + 3;y++)
 								if(turnim[y][cursor] == 'n')
@@ -1094,12 +1105,14 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 						if(todo->altro == FALSE)            /* FALSE se pome deve essere libero */
 							turnip[x][cursor] = '*';
 						++x;
+						++written;
 					}
 					else {
 						turnip[x][cursor] = todo->id;
 						if(todo->altro == FALSE)            /* FALSE se matt deve essere libera */
 							turnim[x][cursor] = '*';
 						++x;
+						++written;
 					}
 					if(todo->id == 'n') {
 						turnim[x][cursor] = 's';
@@ -1108,9 +1121,14 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 				}
 			}
 			if((current = panta_rei(current)) == NULL)
-					current = first;
+				current = first;
 		}
 	}
+	printf("written = %d found = %d\n",written,found);
+	if(written < found)
+		return(1);
+	else
+		return(0);
 }
 
 void main()
@@ -1160,7 +1178,8 @@ while((item = menu()) != 9) {
 		do {
 			current = first;
 			for(x = 0;x < todo->who;x++)               /* who = numero medici */
-				fa_su_sti_turni(dnum,current,todo);
+				if(fa_su_sti_turni(dnum,current,todo) != 0)
+					printf("problemi con %s\n",todo->name);
 			todo = todo->next;
 		} while(todo != NULL);
 		printf("\t\t");
