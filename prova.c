@@ -16,6 +16,7 @@
 
 char turnim[30][13];
 char turnip[30][13];
+int ore[13];
 
 char *mesi[] =
 {
@@ -673,7 +674,7 @@ scacca->id = 12;
 strcpy(scacca->name,"Scaccabarozzi");
 strcpy(scacca->cap,"nGAUVOTR");
 scacca->guardie = 0;
-scacca->notti = 15;
+scacca->notti = 0;
 scacca->g_fest = 5;
 scacca->r_fest = 3;
 scacca->n_fest = 4;
@@ -694,7 +695,7 @@ stanzi->id = 11;
 strcpy(stanzi->name,"Stanzani");
 strcpy(stanzi->cap,"nGAUNEMR");
 stanzi->guardie = 0;
-stanzi->notti = 17;
+stanzi->notti = 0;
 stanzi->g_fest = 3;
 stanzi->r_fest = 5;
 stanzi->n_fest = 2;
@@ -720,7 +721,7 @@ sanga->id = 10;
 strcpy(sanga->name,"Sangalli");
 strcpy(sanga->cap,"nGADCVTR");
 sanga->guardie = 0;
-sanga->notti = 19;
+sanga->notti = 0;
 sanga->g_fest = 4;
 sanga->r_fest = 2;
 sanga->n_fest = 3;
@@ -741,7 +742,7 @@ riga->id = 9;
 strcpy(riga->name,"Rigamonti");
 strcpy(riga->cap,"nGACUNEMR");
 riga->guardie = 0;
-riga->notti = 16;
+riga->notti = 0;
 riga->g_fest = 6;
 riga->r_fest = 2;
 riga->n_fest = 4;
@@ -762,7 +763,7 @@ frencis->id = 8;
 strcpy(frencis->name,"Piamarta");
 strcpy(frencis->cap,"nGAUOMPR");
 frencis->guardie = 0;
-frencis->notti = 17;
+frencis->notti = 0;
 frencis->g_fest = 5;
 frencis->r_fest = 1;
 frencis->n_fest = 5;
@@ -770,7 +771,7 @@ frencis->next = riga;
 frencis->iwant = fre;
 
 fre = malloc(sizeof(struct desidero));
-strcpy(fre->ferie,"25-26-27-28-29");
+strcpy(fre->ferie,11-14-15-16-17-18");
 strcpy(fre->congre,"7-8");
 strcpy(fre->riposi,"10-20");
 strcpy(fre->mattine,"");
@@ -783,7 +784,7 @@ mante->id = 7;
 strcpy(mante->name,"Mantero");
 strcpy(mante->cap,"nGASNR");
 mante->guardie = 0;
-mante->notti = 23;
+mante->notti = 0;
 mante->g_fest = 7;
 mante->r_fest = 4;
 mante->n_fest = 6;
@@ -791,7 +792,7 @@ mante->next = frencis;
 mante->iwant = man;
 
 man = malloc(sizeof(struct desidero));
-strcpy(man->ferie,"11-12-13-14-15");
+strcpy(man->ferie,"14-15-16-17-18");
 strcpy(man->congre,"27");
 strcpy(man->riposi,"");
 strcpy(man->mattine,"");
@@ -804,7 +805,7 @@ fiumix->id = 6;
 strcpy(fiumix->name,"Fiumani");
 strcpy(fiumix->cap,"nGACUR");
 fiumix->guardie = 0;
-fiumix->notti = 18;
+fiumix->notti = 0;
 fiumix->g_fest = 6;
 fiumix->r_fest = 5;
 fiumix->n_fest = 3;
@@ -825,7 +826,7 @@ costa->id = 5;
 strcpy(costa->name,"Costantino");
 strcpy(costa->cap,"nGADCUVTR");
 costa->guardie = 0;
-costa->notti = 18;
+costa->notti = 0;
 costa->g_fest = 6;
 costa->r_fest = 5;
 costa->n_fest = 3;
@@ -833,7 +834,7 @@ costa->next = fiumix;
 costa->iwant = cos;
 
 cos = malloc(sizeof(struct desidero));
-strcpy(cos->ferie,"");
+strcpy(cos->ferie,"14-15-16-17-18");
 strcpy(cos->congre,"7-8");
 strcpy(cos->riposi,"1-9-10-13");
 strcpy(cos->mattine,"");
@@ -846,7 +847,7 @@ borel->id = 4;
 strcpy(borel->name,"Borelli");
 strcpy(borel->cap,"nGADCUPER");
 borel->guardie = 0;
-borel->notti = 22;
+borel->notti = 0;
 borel->g_fest = 4;
 borel->r_fest = 2;
 borel->n_fest = 5;
@@ -867,7 +868,7 @@ bianchi->id = 3;
 strcpy(bianchi->name,"Bianchi");
 strcpy(bianchi->cap,"nGAUOPR");
 bianchi->guardie = 0;
-bianchi->notti = 14;
+bianchi->notti = 0;
 bianchi->g_fest = 4;
 bianchi->r_fest = 7;
 bianchi->n_fest = 3;
@@ -888,7 +889,7 @@ basil->id = 2;
 strcpy(basil->name,"Basilico");
 strcpy(basil->cap,"nGAUOR");
 basil->guardie = 0;
-basil->notti = 19;
+basil->notti = 0;
 basil->g_fest = 4;
 basil->r_fest = 7;
 basil->n_fest = 4;
@@ -896,7 +897,7 @@ basil->next = bianchi;
 basil->iwant = bas;
 
 bas = malloc(sizeof(struct desidero));
-strcpy(bas->ferie,"14-15-30");
+strcpy(bas->ferie,"14-15-16-17-18");
 strcpy(bas->congre,"7-8");
 strcpy(bas->riposi,"16-17");
 strcpy(bas->mattine,"");
@@ -909,7 +910,7 @@ balge->id = 1;
 strcpy(balge->name,"Balgera");
 strcpy(balge->cap,"nGAUSOR");
 balge->guardie = 0;
-balge->notti = 22;
+balge->notti = 0;
 balge->g_fest = 5;
 balge->r_fest = 6;
 balge->n_fest = 4;
@@ -917,7 +918,7 @@ balge->next = basil;
 balge->iwant = bal;
 
 bal = malloc(sizeof(struct desidero));
-strcpy(bal->ferie,"");
+strcpy(bal->ferie,"21-22-23-24-25");
 strcpy(bal->congre,"");
 strcpy(bal->riposi,"16-24");
 strcpy(bal->mattine,"");
@@ -935,7 +936,7 @@ alippa->id = 0;
 strcpy(alippa->name,"Aliprandi");
 strcpy(alippa->cap,"nGADCUVTR");
 alippa->guardie = 0;
-alippa->notti = 20;
+alippa->notti = 0;
 alippa->g_fest = 3;
 alippa->r_fest = 2;
 alippa->n_fest = 4;
@@ -1009,6 +1010,15 @@ int check_guardie(struct medico *current)
 	return(0);
 }
 
+ferie(struct medico *current, int month)
+{
+struct desidero *holiday;
+
+	for(x = 0;x < dmesi[month];x++) {
+
+	}
+}
+
 int fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 {
 	int x,y,z,month,cap,result,counter,found,written;
@@ -1028,6 +1038,7 @@ int fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 		strcpy(firstday,"mer");
 	else if(todo->init == 1)
 		strcpy(firstday,"mar");
+	ferie(current,month);
 	for(x = 0;x < dmesi[month];x++) {
 		if((strcmp(firstday,mes[x])) == 0) {  /* firstday = giorno inizio */
 			++found;
@@ -1073,18 +1084,19 @@ int fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 						}
 						
 					}
-					else if(todo->id == 'N')                               /* impedisce 2 settimane di giro */
+					else if(todo->id == 'N') {
 						 if(turnip[x][cursor] != ' ')
 							result = 1;
+					}
 					else if(todo->id == 'n') {
-						if(x > 3) {
-							for(y = x - 3;y < x + 3;y++)
-								if(turnim[y][cursor] == 'n')
+						if(x > 4) {
+							for(y = x - 4;y < x + 4;y++)
+								if(turnip[y][cursor] == 'n')
 									result = 1;
 						}
 						else {
-							for(y = x;y < x + 3;y++)
-								if(turnim[y][cursor] == 'n')
+							for(y = x;y < x + 4;y++)
+								if(turnip[y][cursor] == 'n')
 									result = 1;
 						}
 					}
@@ -1102,6 +1114,7 @@ int fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 				if(x < dmesi[month]) {
 					if((strcmp(todo->when,"M")) == 0) {
 						turnim[x][cursor] = todo->id;
+						++ore[x];
 						if(todo->altro == FALSE)            /* FALSE se pome deve essere libero */
 							turnip[x][cursor] = '*';
 						++x;
@@ -1109,6 +1122,7 @@ int fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 					}
 					else {
 						turnip[x][cursor] = todo->id;
+						++ore[x];
 						if(todo->altro == FALSE)            /* FALSE se matt deve essere libera */
 							turnim[x][cursor] = '*';
 						++x;
@@ -1160,8 +1174,9 @@ while((item = menu()) != 9) {
 */
 	}
 	else if(item == 3) {
-		for(x = 1;x < 31;x++)
-			printf("%d %s\n",x,mes[x]);
+		for(x = 0;x < 31;x++)
+			printf("%d %s\n",x + 1,mes[x]);
+		scanf("%c",&c);
 		scanf("%c",&c);
 	}
 	else if(item == 4) {
