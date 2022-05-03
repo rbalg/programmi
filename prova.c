@@ -162,21 +162,21 @@ struct medico {
 	int r_fest;
 	int n_fest;
 	struct medico *next;
-	struct desidero *iwant;
 };
 
 struct desidero {
-	char ferie[40];
+	int ferie[40];
 	char congre[20];
 	char riposi[20];
 	char mattine[20];
 	char pome[20];
 	char notti[20];
 	struct des_amb *amb;
+	struct desidero *next;
 };
 
 struct des_amb {
-	char amb[1];
+	char amb[2];
 	char day[10];
 	struct des_amb *next;
 };
@@ -666,8 +666,6 @@ return(rep);
 struct medico *dutur()
 {
 struct medico *scacca, *stanzi, *sanga, *riga, *frencis, *mante, *fiumix, *costa, *borel, *bianchi, *basil, *balge, *alippa;
-struct desidero *sca, *sta, *san, *rig, *fre, *man, *fiu, *cos, *bor, *bia, *bas, *bal, *ali; 
-struct des_amb *stnz, *blgr;
 	
 scacca = malloc(sizeof(struct medico));
 scacca->id = 12;
@@ -679,16 +677,6 @@ scacca->g_fest = 5;
 scacca->r_fest = 3;
 scacca->n_fest = 4;
 scacca->next = NULL;
-scacca->iwant = sca;
-
-sca = malloc(sizeof(struct desidero));
-strcpy(sca->ferie,"");
-strcpy(sca->congre,"7-8");
-strcpy(sca->riposi,"1-2-3-24");
-strcpy(sca->mattine,"");
-strcpy(sca->pome,"14");
-strcpy(sca->notti,"");
-sca->amb = NULL;
 
 stanzi = malloc(sizeof(struct medico));
 stanzi->id = 11;
@@ -700,22 +688,7 @@ stanzi->g_fest = 3;
 stanzi->r_fest = 5;
 stanzi->n_fest = 2;
 stanzi->next = scacca;
-stanzi->iwant = sta;
 
-sta = malloc(sizeof(struct desidero));
-strcpy(sta->ferie,"18-19-20-21-22");
-strcpy(sta->congre,"14-15-29");
-strcpy(sta->riposi,"");
-strcpy(sta->mattine,"4-16");
-strcpy(sta->pome,"4-6-12-16-27");
-strcpy(sta->notti,"3");
-sta->amb = stnz;
-
-stnz = malloc(sizeof(struct des_amb));
-strcpy(stnz->amb,"B");
-strcpy(stnz->day,"28");
-stnz->next = blgr;
-	
 sanga = malloc(sizeof(struct medico));
 sanga->id = 10;
 strcpy(sanga->name,"Sangalli");
@@ -726,16 +699,6 @@ sanga->g_fest = 4;
 sanga->r_fest = 2;
 sanga->n_fest = 3;
 sanga->next = stanzi;
-sanga->iwant = san;
-
-san = malloc(sizeof(struct desidero));
-strcpy(san->ferie,"");
-strcpy(san->congre,"");
-strcpy(san->riposi,"2-16");
-strcpy(san->mattine,"21-22-23");
-strcpy(san->pome,"14-21-22-23");
-strcpy(san->notti,"");
-san->amb = NULL;
 
 riga = malloc(sizeof(struct medico));
 riga->id = 9;
@@ -747,16 +710,6 @@ riga->g_fest = 6;
 riga->r_fest = 2;
 riga->n_fest = 4;
 riga->next = sanga;
-riga->iwant = rig;
-
-rig = malloc(sizeof(struct desidero));
-strcpy(rig->ferie,"11-12-13-14-15");
-strcpy(rig->congre,"25-26");
-strcpy(rig->riposi,"");
-strcpy(rig->mattine,"");
-strcpy(rig->pome,"");
-strcpy(rig->notti,"2-3-20");
-rig->amb = NULL;
 
 frencis = malloc(sizeof(struct medico));
 frencis->id = 8;
@@ -768,16 +721,6 @@ frencis->g_fest = 5;
 frencis->r_fest = 1;
 frencis->n_fest = 5;
 frencis->next = riga;
-frencis->iwant = fre;
-
-fre = malloc(sizeof(struct desidero));
-strcpy(fre->ferie,11-14-15-16-17-18");
-strcpy(fre->congre,"7-8");
-strcpy(fre->riposi,"10-20");
-strcpy(fre->mattine,"");
-strcpy(fre->pome,"5");
-strcpy(fre->notti,"5");
-fre->amb = NULL;
 
 mante = malloc(sizeof(struct medico));
 mante->id = 7;
@@ -789,16 +732,6 @@ mante->g_fest = 7;
 mante->r_fest = 4;
 mante->n_fest = 6;
 mante->next = frencis;
-mante->iwant = man;
-
-man = malloc(sizeof(struct desidero));
-strcpy(man->ferie,"14-15-16-17-18");
-strcpy(man->congre,"27");
-strcpy(man->riposi,"");
-strcpy(man->mattine,"");
-strcpy(man->pome,"8");
-strcpy(man->notti,"8");
-man->amb = NULL;
 
 fiumix = malloc(sizeof(struct medico));
 fiumix->id = 6;
@@ -810,16 +743,6 @@ fiumix->g_fest = 6;
 fiumix->r_fest = 5;
 fiumix->n_fest = 3;
 fiumix->next = mante;
-fiumix->iwant = fiu;
-
-fiu = malloc(sizeof(struct desidero));
-strcpy(fiu->ferie,"");
-strcpy(fiu->congre,"");
-strcpy(fiu->riposi,"2-3");
-strcpy(fiu->mattine,"");
-strcpy(fiu->pome,"20-26");
-strcpy(fiu->notti,"26");
-fiu->amb = NULL;
 
 costa = malloc(sizeof(struct medico));
 costa->id = 5;
@@ -831,16 +754,6 @@ costa->g_fest = 6;
 costa->r_fest = 5;
 costa->n_fest = 3;
 costa->next = fiumix;
-costa->iwant = cos;
-
-cos = malloc(sizeof(struct desidero));
-strcpy(cos->ferie,"14-15-16-17-18");
-strcpy(cos->congre,"7-8");
-strcpy(cos->riposi,"1-9-10-13");
-strcpy(cos->mattine,"");
-strcpy(cos->pome,"14");
-strcpy(cos->notti,"");
-cos->amb = NULL;
 
 borel= malloc(sizeof(struct medico));
 borel->id = 4;
@@ -852,16 +765,6 @@ borel->g_fest = 4;
 borel->r_fest = 2;
 borel->n_fest = 5;
 borel->next = costa;
-borel->iwant = bor;
-
-bor = malloc(sizeof(struct desidero));
-strcpy(bor->ferie,"11-12");
-strcpy(bor->congre,"");
-strcpy(bor->riposi,"9-10-23-24");
-strcpy(bor->mattine,"");
-strcpy(bor->pome,"5");
-strcpy(bor->notti,"");
-bor->amb = NULL;
 
 bianchi = malloc(sizeof(struct medico));
 bianchi->id = 3;
@@ -873,16 +776,6 @@ bianchi->g_fest = 4;
 bianchi->r_fest = 7;
 bianchi->n_fest = 3;
 bianchi->next = borel;
-bianchi->iwant = bia;
-
-bia = malloc(sizeof(struct desidero));
-strcpy(bia->ferie,"4-5-6-7-8-11");
-strcpy(bia->congre,"");
-strcpy(bia->riposi,"");
-strcpy(bia->mattine,"");
-strcpy(bia->pome,"");
-strcpy(bia->notti,"13");
-bia->amb = NULL;
 
 basil = malloc(sizeof(struct medico));
 basil->id = 2;
@@ -894,16 +787,6 @@ basil->g_fest = 4;
 basil->r_fest = 7;
 basil->n_fest = 4;
 basil->next = bianchi;
-basil->iwant = bas;
-
-bas = malloc(sizeof(struct desidero));
-strcpy(bas->ferie,"14-15-16-17-18");
-strcpy(bas->congre,"7-8");
-strcpy(bas->riposi,"16-17");
-strcpy(bas->mattine,"");
-strcpy(bas->pome,"");
-strcpy(bas->notti,"");
-bas->amb = NULL;
 
 balge= malloc(sizeof(struct medico));
 balge->id = 1;
@@ -915,22 +798,7 @@ balge->g_fest = 5;
 balge->r_fest = 6;
 balge->n_fest = 4;
 balge->next = basil;
-balge->iwant = bal;
 
-bal = malloc(sizeof(struct desidero));
-strcpy(bal->ferie,"21-22-23-24-25");
-strcpy(bal->congre,"");
-strcpy(bal->riposi,"16-24");
-strcpy(bal->mattine,"");
-strcpy(bal->pome,"");
-strcpy(bal->notti,"");
-bal->amb = blgr;
-
-blgr = malloc(sizeof(struct des_amb));
-strcpy(blgr->amb,"S");
-strcpy(blgr->day,"14-28");
-blgr->next = NULL;
-	
 alippa = malloc(sizeof(struct medico));
 alippa->id = 0;
 strcpy(alippa->name,"Aliprandi");
@@ -941,18 +809,181 @@ alippa->g_fest = 3;
 alippa->r_fest = 2;
 alippa->n_fest = 4;
 alippa->next = balge;
-alippa->iwant = ali;
 
+return(alippa);
+}
+
+struct desidero *mivolaria()
+{
+struct desidero *sca, *sta, *san, *rig, *fre, *man, *fiu, *cos, *bor, *bia, *bas, *bal, *ali; 
+struct des_amb *stnz, *blgr;
+char risp[2];
+	
+/*
+	ferie richieste a nov. 20
+*/
+
+sca = malloc(sizeof(struct desidero));
+sca->ferie[0] = 26;
+sca->ferie[1] = 27;
+strcpy(sca->congre,"7-8");
+strcpy(sca->riposi,"1-2-3-24");
+strcpy(sca->mattine,"");
+strcpy(sca->pome,"14");
+strcpy(sca->notti,"");
+sca->amb = NULL;
+sca->next = NULL;
+
+sta = malloc(sizeof(struct desidero));
+sta->ferie[0] = 6;
+sta->ferie[1] = 9;
+sta->ferie[2] = 10;
+strcpy(sta->congre,"14-15-29");
+strcpy(sta->riposi,"");
+strcpy(sta->mattine,"4-16");
+strcpy(sta->pome,"4-6-12-16-27");
+strcpy(sta->notti,"3");
+sta->amb = stnz;
+sta->next = sca;
+
+stnz = malloc(sizeof(struct des_amb));
+strcpy(stnz->amb,"B");
+strcpy(stnz->day,"28");
+stnz->next = blgr;
+	
+san = malloc(sizeof(struct desidero));
+san->ferie[0] = 0;
+strcpy(san->congre,"");
+strcpy(san->riposi,"2-16");
+strcpy(san->mattine,"21-22-23");
+strcpy(san->pome,"14-21-22-23");
+strcpy(san->notti,"");
+san->amb = NULL;
+san->next = sta;
+
+rig = malloc(sizeof(struct desidero));
+rig->ferie[0] = 5;
+rig->ferie[1] = 6;
+strcpy(rig->congre,"25-26");
+strcpy(rig->riposi,"");
+strcpy(rig->mattine,"");
+strcpy(rig->pome,"");
+strcpy(rig->notti,"2-3-20");
+rig->amb = NULL;
+rig->next = san;
+
+fre = malloc(sizeof(struct desidero));
+fre->ferie[0] = 11;
+fre->ferie[1] = 14;
+fre->ferie[2] = 15;
+fre->ferie[3] = 16;
+fre->ferie[4] = 17;
+fre->ferie[5] = 18;
+strcpy(fre->congre,"7-8");
+strcpy(fre->riposi,"10-20");
+strcpy(fre->mattine,"");
+strcpy(fre->pome,"5");
+strcpy(fre->notti,"5");
+fre->amb = NULL;
+fre->next = rig;
+
+man = malloc(sizeof(struct desidero));
+man->ferie[0] = 0;
+strcpy(man->congre,"27");
+strcpy(man->riposi,"");
+strcpy(man->mattine,"");
+strcpy(man->pome,"8");
+strcpy(man->notti,"8");
+man->amb = NULL;
+man->next = fre;
+
+fiu = malloc(sizeof(struct desidero));
+fiu->ferie[0] = 12;
+fiu->ferie[1] = 13;
+strcpy(fiu->congre,"");
+strcpy(fiu->riposi,"2-3");
+strcpy(fiu->mattine,"");
+strcpy(fiu->pome,"20-26");
+strcpy(fiu->notti,"26");
+fiu->amb = NULL;
+fiu->next = man;
+
+cos = malloc(sizeof(struct desidero));
+cos->ferie[0] = 25;
+cos->ferie[1] = 26;
+cos->ferie[2] = 27;
+strcpy(cos->congre,"7-8");
+strcpy(cos->riposi,"1-9-10-13");
+strcpy(cos->mattine,"");
+strcpy(cos->pome,"14");
+strcpy(cos->notti,"");
+cos->amb = NULL;
+cos->next = fiu;
+
+bor = malloc(sizeof(struct desidero));
+bor->ferie[0] = 11;
+bor->ferie[1] = 12;
+strcpy(bor->congre,"");
+strcpy(bor->riposi,"9-10-23-24");
+strcpy(bor->mattine,"");
+strcpy(bor->pome,"5");
+strcpy(bor->notti,"");
+bor->amb = NULL;
+bor->next = cos;
+
+bia = malloc(sizeof(struct desidero));
+bia->ferie[0] = 2;
+bia->ferie[1] = 3;
+bia->ferie[2] = 4;
+bia->ferie[3] = 5;
+strcpy(bia->congre,"");
+strcpy(bia->riposi,"");
+strcpy(bia->mattine,"");
+strcpy(bia->pome,"");
+strcpy(bia->notti,"13");
+bia->amb = NULL;
+bia->next = bor;
+
+bas = malloc(sizeof(struct desidero));
+bas->ferie[0] = 11;
+bas->ferie[1] = 12;
+bas->ferie[2] = 13;
+strcpy(bas->congre,"7-8");
+strcpy(bas->riposi,"16-17");
+strcpy(bas->mattine,"");
+strcpy(bas->pome,"");
+strcpy(bas->notti,"");
+bas->amb = NULL;
+bas->next = bia;
+
+bal = malloc(sizeof(struct desidero));
+bal->ferie[0] = 22;
+strcpy(bal->congre,"");
+strcpy(bal->riposi,"16-24");
+strcpy(bal->mattine,"");
+strcpy(bal->pome,"");
+strcpy(bal->notti,"");
+bal->amb = blgr;
+bal->next = bas;
+
+blgr = malloc(sizeof(struct des_amb));
+strcpy(blgr->amb,"S");
+strcpy(blgr->day,"14-28");
+blgr->next = NULL;
+	
 ali = malloc(sizeof(struct desidero));
-strcpy(ali->ferie,"");
+ali->ferie[0] = 13;
+ali->ferie[1] = 14;
+ali->ferie[2] = 15;
 strcpy(ali->congre,"");
 strcpy(ali->riposi,"22");
 strcpy(ali->mattine,"");
 strcpy(ali->pome,"13-14-28");
 strcpy(ali->notti,"");
 ali->amb = NULL;
+ali->next = bal;
 
-return(alippa);
+return(ali);
 }
 
 struct medico *panta_rei(struct medico *current)
@@ -1010,20 +1041,39 @@ int check_guardie(struct medico *current)
 	return(0);
 }
 
-ferie(struct medico *current, int month)
+/*
+char *ferie(struct desidero *des)
 {
-struct desidero *holiday;
-
-	for(x = 0;x < dmesi[month];x++) {
-
+static int x = 0;
+int y;
+char *festa,c[3],*p;
+	
+	strcpy(festa,des->ferie);
+	y = 0;
+	if(festa[x] == '\0') {
+		x = 0;
+		return(NULL);
 	}
+	while((festa[x] != '-') && (festa[x] != '\0'))
+		c[y++] = festa[x++];
+	if(festa[x] != '\0')
+		++x;
+	c[y] = '\0';
+	strcpy(p,c);  
+	printf("p = %s\n",p);
+	return(p);
+
 }
+*/
 
 int fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 {
 	int x,y,z,month,cap,result,counter,found,written;
-	char firstday[4],c;
+	char *ric;
+	int fer;
+	char firstday[4],c,d[2];
 	struct medico *first;
+	struct desidero *sculta, *ffirst;
 
 	first = current;
 	counter = found = written = 0; 
@@ -1038,23 +1088,35 @@ int fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 		strcpy(firstday,"mer");
 	else if(todo->init == 1)
 		strcpy(firstday,"mar");
-	ferie(current,month);
+	sculta = mivolaria();
+	ffirst = sculta;
+
 	for(x = 0;x < dmesi[month];x++) {
 		if((strcmp(firstday,mes[x])) == 0) {  /* firstday = giorno inizio */
 			++found;
 			do {
 				cursor = current->id;
 				while((choose2(current,todo->id)) == 1) {
-					current = current->next;
+					current = current->next;                  
+					sculta = sculta->next;                    /* scorre i desiderata */
 					if(current == NULL) {
 						current = first;
 						++counter;
 					}
+					if (sculta == NULL)
+						sculta = ffirst;
 				}
 				cursor = current->id;
 				result = varda_se_el_va_ben(todo->length,todo->when,x);
 				if(counter > 3)
 					exit;
+				y = 0;
+				printf("cursor = %d\n",cursor);
+				while(sculta->ferie[y] != 0) {
+					printf("sculta->ferie[%d] = %d\n",y,sculta->ferie[y]);
+					if(x + 1 == sculta->ferie[y++])
+						result = 1;
+				}
 				if(result == 0) {
 					if(todo->id == 'G') {                                 /* controlla che le guardie non siano troppo vicine */
 						if((check_guardie(current)) == 0) {
@@ -1082,7 +1144,6 @@ int fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 								if(turnim[y][cursor] == 'R')
 									result = 1;
 						}
-						
 					}
 					else if(todo->id == 'N') {
 						 if(turnip[x][cursor] != ' ')
@@ -1102,6 +1163,7 @@ int fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 					}
 				}
 				if(result == 1) {
+					sculta = sculta->next;
 					if((current = panta_rei(current)) == NULL) {
 						current = first;
 						++counter;
@@ -1136,6 +1198,9 @@ int fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 			}
 			if((current = panta_rei(current)) == NULL)
 				current = first;
+			sculta = sculta->next;
+			if(sculta == NULL)
+				sculta = ffirst;
 		}
 	}
 	printf("written = %d found = %d\n",written,found);
@@ -1181,7 +1246,7 @@ while((item = menu()) != 9) {
 	}
 	else if(item == 4) {
 		todo = lavura();
-		current = dutur();		
+		current = dutur();	
 		first = current;
 		cursor = 0;
 		for(x = 0;x < 30;x++) {
