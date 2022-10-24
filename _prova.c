@@ -313,6 +313,36 @@ printf("mese = %s\n",mesi[month]);
 return;
 }
 
+struct activity *lavura2()
+{
+	FILE *fatt;
+	char buf[4];
+	int c;
+	struct activity *att1;
+
+	fatt = fopen("attivita.txt","r");
+	if(fatt == NULL)
+        return(NULL);
+	att1 = malloc(sizeof(struct activity));
+	fscanf(fatt,"%d",&c);
+	att1->id = c;
+	fscanf(fatt,"%d",&c);
+	if(c == 0)
+		att1->altro = FALSE;
+	else
+		att1->altro = TRUE;
+	fscanf(fatt,"%s",buf);
+	strcpy(att1->name,buf);
+	fscanf(fatt,"%d",&c);
+	att1->length = c;
+	fscanf(fatt,"%s",buf);
+	strcpy(att1->when,buf);
+	fscanf(fatt,"%d",&c);
+	att1->who = c;
+
+	return(att1);
+}
+
 struct activity *lavura()
 {
 struct activity *rep,*su,*dop,*cef,*u1,*u2,*cer,*smmer,*sm2,*pd,*nm,*ep,*emg1,*emg2;
@@ -367,7 +397,7 @@ nlun->init = 0;
 nlun->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
 strcpy(nlun->when,"N");   /* si svolge di notte */
 nlun->who = 1;            /* per questa attività serve un solo medico */
-nlun->next = NULL;
+nlun->next = nmar;
 
 guav = malloc(sizeof(struct activity));              /* amb lunedì pome */
 guav->id = 'G';
