@@ -3,8 +3,9 @@
 #include <string.h>
 #include <math.h>
 #include <malloc.h>
+/*
 #include <gtk/gtk.h>
-
+*/
 #define RESET   "\033[0m"
 #define BLACK   "\033[30m"      /* Black */
 #define RED     "\033[31m"      /* Red */
@@ -142,7 +143,7 @@ R = reparto
 #define FALSE 0
 
 struct activity {
-	char id;
+	char id[2];
 	int altro;
 	char name[4];
 	int init;       /* giorno settimana in cui inizia */
@@ -354,313 +355,45 @@ c = scanf("%c",&c);
 */
 }
 
-struct activity *lavura()
+struct activity *lavura2()
 {
-struct activity *rep,*su,*dop,*cef,*u1,*u2,*cer,*smmer,*sm2,*pd,*nm,*ep,*emg1,*emg2;
-struct activity *emg3,*emg4,*emg5,*emg6,*emg7,*amb,*gual,*guam,*guamm,*guag,*guav;
-struct activity *nlun,*nmar,*nmer,*ngio,*nven;
+	FILE *fatt;
+	char buf[4];
+	int c;
+	struct activity *att1, *prosim;
 
-nven = malloc(sizeof(struct activity));              /* notte venerdì */
-nven->id = 'n';
-nven->altro = FALSE;
-strcpy(nven->name,"not");
-nven->init = 4;   
-nven->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(nven->when,"M");   
-nven->who = 1;            /* per questa attività serve un solo medico */
-nven->next = NULL;
-
-ngio = malloc(sizeof(struct activity));              /* notte giovedì */
-ngio->id = 'n';
-ngio->altro = FALSE;
-strcpy(ngio->name,"not");
-ngio->init = 3;   
-ngio->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(ngio->when,"M");   
-ngio->who = 1;            /* per questa attività serve un solo medico */
-ngio->next = nven;
-
-nmer = malloc(sizeof(struct activity));              /* notte mercoledì */
-nmer->id = 'n';
-nmer->altro = FALSE;
-strcpy(nmer->name,"not");
-nmer->init = 2;   
-nmer->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(nmer->when,"M");   
-nmer->who = 1;            /* per questa attività serve un solo medico */
-nmer->next = ngio;
-
-nmar = malloc(sizeof(struct activity));              /* notte martedì */
-nmar->id = 'n';
-nmar->altro = FALSE;
-strcpy(nmar->name,"not");
-nmar->init = 1;   
-nmar->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(nmar->when,"M");   
-nmar->who = 1;            /* per questa attività serve un solo medico */
-nmar->next = nmer;
-
-nlun = malloc(sizeof(struct activity));              /* notte lunedì */
-nlun->id = 'n';
-nlun->altro = FALSE;
-strcpy(nlun->name,"not");
-nlun->init = 0;   
-nlun->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(nlun->when,"M");   
-nlun->who = 1;            /* per questa attività serve un solo medico */
-nlun->next = nmar;
-
-guav = malloc(sizeof(struct activity));              /* amb lunedì pome */
-guav->id = 'G';
-guav->altro = FALSE;
-strcpy(guav->name,"gua");
-guav->init = 4;   
-guav->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(guav->when,"M");   
-guav->who = 1;            /* per questa attività serve un solo medico */
-guav->next = nlun;	
-	
-guag = malloc(sizeof(struct activity));              /* amb lunedì pome */
-guag->id = 'G';
-guag->altro = FALSE;
-strcpy(guag->name,"gua");
-guag->init = 3;   
-guag->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(guag->when,"M");   
-guag->who = 1;            /* per questa attività serve un solo medico */
-guag->next = guav;	
-	
-guamm = malloc(sizeof(struct activity));              /* amb lunedì pome */
-guamm->id = 'G';
-guamm->altro = FALSE;
-strcpy(guamm->name,"gua");
-guamm->init = 2;   
-guamm->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(guamm->when,"M");   
-guamm->who = 1;            /* per questa attività serve un solo medico */
-guamm->next = guag;	
-	
-guam = malloc(sizeof(struct activity));              /* amb lunedì pome */
-guam->id = 'G';
-guam->altro = FALSE;
-strcpy(guam->name,"gua");
-guam->init = 1;   
-guam->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(guam->when,"M");   
-guam->who = 1;            /* per questa attività serve un solo medico */
-guam->next = guamm;	
-	
-gual = malloc(sizeof(struct activity));              /* amb lunedì pome */
-gual->id = 'G';
-gual->altro = FALSE;
-strcpy(gual->name,"gua");
-gual->init = 0;   
-gual->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(gual->when,"M");   
-gual->who = 1;            /* per questa attività serve un solo medico */
-gual->next = guam;
-
-amb = malloc(sizeof(struct activity));              /* amb lunedì pome */
-amb->id = 'A';
-amb->altro = FALSE;
-strcpy(amb->name,"amb");
-amb->init = 0;   
-amb->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(amb->when,"P");   
-amb->who = 1;            /* per questa attività serve un solo medico */
-amb->next = gual;
-
-emg7 = malloc(sizeof(struct activity));            /* emg venerdì */ 
-emg7->id = 'M';
-emg7->altro = TRUE;
-strcpy(emg7->name,"emg");
-emg7->init = 4;   
-emg7->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(emg7->when,"M");   
-emg7->who = 1;            /* per questa attività serve un solo medico */
-emg7->next = amb;
-
-emg6 = malloc(sizeof(struct activity));            /* emg giovedì pome */
-emg6->id = 'M';
-emg6->altro = TRUE;
-strcpy(emg6->name,"emg");
-emg6->init = 3;   
-emg6->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(emg6->when,"P");   
-emg6->who = 1;            /* per questa attività serve un solo medico */
-emg6->next = emg7;
-
-emg5 = malloc(sizeof(struct activity));            /* emg giovedì matt */
-emg5->id = 'M';
-emg5->altro = TRUE;
-strcpy(emg5->name,"emg");
-emg5->init = 3;   
-emg5->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(emg5->when,"M");   
-emg5->who = 1;            /* per questa attività serve un solo medico */
-emg5->next = emg6;
-
-emg4 = malloc(sizeof(struct activity));            /* emg martedì pome */
-emg4->id = 'M';
-emg4->altro = TRUE;
-strcpy(emg4->name,"emg");
-emg4->init = 1;   
-emg4->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(emg4->when,"P");   
-emg4->who = 1;            /* per questa attività serve un solo medico */
-emg4->next = emg5;
-
-emg3 = malloc(sizeof(struct activity));            /* emg martedì matt */
-emg3->id = 'M';
-emg3->altro = TRUE;
-strcpy(emg3->name,"emg");
-emg3->init = 1;
-emg3->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(emg3->when,"M");   
-emg3->who = 1;            /* per questa attività serve un solo medico */
-emg3->next = emg4;
-
-emg2 = malloc(sizeof(struct activity));            /* emg lunedì pome */
-emg2->id = 'M';
-emg2->altro = TRUE;
-strcpy(emg2->name,"emg");
-emg2->init = 0;         /* l'attività inizia il primo giorno, lunedì, cioè 0 */
-emg2->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(emg2->when,"P");   
-emg2->who = 1;            /* per questa attività serve un solo medico */
-emg2->next = emg3;
-
-emg1 = malloc(sizeof(struct activity));            /* emg lunedì matt */
-emg1->id = 'M';
-emg1->altro = TRUE;
-strcpy(emg1->name,"emg");
-emg1->init = 0;         /* l'attività inizia il primo giorno, lunedì, cioè 0 */
-emg1->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(emg1->when,"M");   
-emg1->who = 1;            /* per questa attività serve un solo medico */
-emg1->next = emg2;
-
-ep = malloc(sizeof(struct activity));            /* amb epilessia mercoledì pome */
-ep->id = 'E';
-ep->altro = TRUE;
-strcpy(ep->name,"epi");
-ep->init = 2;           /* l'attività inizia il terzo giorno, mercoledì, cioè 2 */
-ep->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(ep->when,"P");   /* l'attività inizia il pomeriggio, per cui "P" e non "M" */
-ep->who = 1;            /* per questa attività serve un solo medico */
-ep->next = emg1;
-
-nm = malloc(sizeof(struct activity));            /* amb neuromuscolare venerdì pome */
-nm->id = 'N';
-nm->altro = TRUE;
-strcpy(nm->name,"nm");
-nm->init = 4;           /* l'attività inizia il quinto giorno, venerdì, cioè 4 */
-nm->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(nm->when,"P");   /* l'attività inizia il pomeriggio, per cui "P" e non "M" */
-nm->who = 1;            /* per questa attività serve un solo medico */
-nm->next = ep;
-
-pd = malloc(sizeof(struct activity));            /* amb parkinson giovedì pome */
-pd->id = 'P';
-pd->altro = TRUE;
-strcpy(pd->name,"pd");
-pd->init = 3;           /* l'attività inizia il quarto giorno, giovedì, cioè 3 */
-pd->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(pd->when,"P");   /* l'attività inizia il pomeriggio, per cui "P" e non "M" */
-pd->who = 1;            /* per questa attività serve un solo medico */
-pd->next = nm;
-
-dop = malloc(sizeof(struct activity));            /* amb doppler venerdì matt */
-dop->id = 'D';
-dop->altro = TRUE;
-strcpy(dop->name,"dop");
-dop->init = 4;           /* l'attività inizia il quinto giorno, venerdì, cioè 4 */
-dop->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(dop->when,"M");   /* l'attività inizia la mattina, per cui "M" e non "P" */
-dop->who = 1;            /* per questa attività serve un solo medico */
-dop->next = pd;
-
-cef = malloc(sizeof(struct activity));            /* amb cefalee mercoledì pome */
-cef->id = 'C';
-cef->altro = TRUE;
-strcpy(cef->name,"cef");
-cef->init = 2;           /* l'attività inizia il terzo giorno, mercoledì, cioè 2 */
-cef->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(cef->when,"P");   /* l'attività inizia la mattina, per cui "P" e non "M" */
-cef->who = 1;            /* per questa attività serve un solo medico */
-cef->next = dop;
-
-u1 = malloc(sizeof(struct activity));            /* amb uva martedì matt */
-u1->id = 'U';
-u1->altro = TRUE;
-strcpy(u1->name,"uva");
-u1->init = 1;           /* l'attività inizia il secondo giorno, martedì, cioè 1 */
-u1->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(u1->when,"M");   /* l'attività inizia la mattina, per cui "M" e non "P" */
-u1->who = 1;            /* per questa attività serve un solo medico */
-u1->next = cef;
-
-u2 = malloc(sizeof(struct activity));            /* amb uva venerdì pome */
-u2->id = 'U';
-u2->altro = TRUE;
-strcpy(u2->name,"uva");
-u2->init = 4;           /* l'attività inizia il quinto giorno, venerdì, cioè 4 */
-u2->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(u2->when,"P");   /* l'attività inizia il pomeriggio, per cui "P" e non "M" */
-u2->who = 1;            /* per questa attività serve un solo medico */
-u2->next = u1;
-
-cer = malloc(sizeof(struct activity));            /* amb cerebrovascolare martedì pome */
-cer->id = 'V';
-cer->altro = TRUE;
-strcpy(cer->name,"cer");
-cer->init = 1;           /* l'attività inizia il secondo giorno, martedì, cioè 1 */
-cer->length = 1;         /* l'attività dura un solo giorno, per cui il valore è 1 */
-strcpy(cer->when,"P");   /* l'attività inizia il pomeriggio, per cui "P" e non "M" */
-cer->who = 1;            /* per questa attività serve un solo medico */
-cer->next = u2;
-
-smmer = malloc(sizeof(struct activity));
-smmer->id = 'S';
-smmer->altro = TRUE;
-strcpy(smmer->name,"sm");
-smmer->init = 2;           
-smmer->length = 1;      
-strcpy(smmer->when,"M");   
-smmer->who = 1;            
-smmer->next = cer;
-
-sm2 = malloc(sizeof(struct activity));
-sm2->id = 'S';
-sm2->altro = TRUE;
-strcpy(sm2->name,"sm");
-sm2->init = 2;           
-sm2->length = 1;         
-strcpy(sm2->when,"P");   
-sm2->who = 1;            
-sm2->next = smmer;
-
-su = malloc(sizeof(struct activity));
-su->id = 'T';
-su->altro = FALSE;
-strcpy(su->name,"su");
-su->init = 0;           /* l'attività inizia il primo giorno, lunedì, cioè 0 */
-su->length = 5;         /* l'attività dura tutta settimana, per cui il valore è 5 */
-strcpy(su->when,"M");   /* l'attività inizia la mattina, per cui "M" e non "P" */
-su->who = 1;            /* per questa attività serve un medico */
-su->next = sm2;
-
-rep = malloc(sizeof(struct activity));
-rep->id = 'R';
-rep->altro = FALSE;
-strcpy(rep->name,"rep");
-rep->init = 0;           /* l'attività inizia il primo giorno, lunedì, cioè 0 */
-rep->length = 5;         /* l'attività dura tutta settimana, per cui il valore è 5 */
-strcpy(rep->when,"M");   /* l'attività inizia la mattina, per cui "M" e non "P" */
-rep->who = 2;            /* per questa attività servono due medici */
-rep->next = su;
-
-return(rep);
+	fatt = fopen("attivita.txt","r");
+	if(fatt == NULL)
+        return(NULL);
+	else
+		prosim = NULL;
+		do {
+			att1 = malloc(sizeof(struct activity));
+			fscanf(fatt,"%s",buf);
+			strcpy(att1->id,buf);
+			fscanf(fatt,"%s",buf);
+			c = atoi(buf);
+			if(c == 0)
+				att1->altro = FALSE;
+			else
+				att1->altro = TRUE;
+			fscanf(fatt,"%s",buf);
+			strcpy(att1->name,buf);
+			fscanf(fatt,"%s",buf);
+			c = atoi(buf);
+			att1->init = c;
+			fscanf(fatt,"%d",&c);
+			att1->length = c;
+			fscanf(fatt,"%s",buf);
+			strcpy(att1->when,buf);
+			fscanf(fatt,"%s",buf);
+			c = atoi(buf);
+			att1->who = c;
+			att1->next = prosim;
+			fscanf(fatt,"%s",buf);
+			prosim = att1;
+		} while(strcmp(buf,"*-*") != 0);
+	return(att1);
 }
 	
 struct medico *dutur()
@@ -964,12 +697,12 @@ struct medico *panta_rei(struct medico *current)
 		return(current);	
 }
 
-int choose2(struct medico *current,char c)
+int choose2(struct medico *current,char c[2])
 {
 	int x;
 
 	for(x = 0;current->cap[x] != '\0';x++) {
-		if(current->cap[x] == c)
+		if(current->cap[x] == c[0])
 			return(0);
 	}
 	return(1);
@@ -982,6 +715,9 @@ int varda_se_el_va_ben(int length, char when[2], int x)
 	if(strcmp(when,"M") == 0) {
 		for(u = 0;u < length;u++)
 			if(turnim[x + u][cursor] != ' ')
+				return(1);
+		for(u = -1;u < 1;u++)
+			if(turnim[x + u][cursor] == 'n')
 				return(1);
 	}
 	else
@@ -1002,6 +738,78 @@ int check_guardie(struct medico *current)
 		if(current->guardie < g)
 			return(1);
 	return(0);
+}
+
+void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
+{
+	char firstday[4];
+	int month,x,z,result;
+	struct medico *first;
+
+	first = current;
+	switch(todo->init)
+	{
+		case 0:
+			strcpy(firstday,"lun");
+			break;
+		case 1:
+			strcpy(firstday,"mar");
+			break;
+		case 2:
+			strcpy(firstday,"mer");
+			break;
+		case 3:
+			strcpy(firstday,"gio");
+			break;
+		case 4:
+			strcpy(firstday,"ven");
+			break;
+	}
+	month = fabs(dnum/100);
+	for(x = 0;x < dmesi[month];x++) {
+		if((strcmp(firstday,mes[x])) == 0) {
+			while((choose2(current,todo->id)) == 1) {
+				current = current->next;
+				if(current == NULL) {
+					current = first;
+				}
+			}
+			cursor = current->id;
+			result = varda_se_el_va_ben(todo->length,todo->when,x);
+			if(result == 1) {
+				if((current = panta_rei(current)) == NULL) {
+					current = first;
+				}
+			}
+			else {
+				for(z = 0;z < todo->length;z++) {
+					if(x < dmesi[month]) {
+						if((strcmp(todo->when,"M")) == 0) {
+							printf("ciap todo->id = %s\n",todo->id);
+							printf("cursor = %d\n",cursor);
+							turnim[x][cursor] = todo->id[0];
+							if(todo->altro == FALSE)            /* FALSE se pome deve essere libero */
+								turnip[x][cursor] = '*';
+							printf("turnim = %c\n",turnim[x][cursor]);
+							++x;
+						}
+						else {
+							turnip[x][cursor] = todo->id[0];
+							if(todo->altro == FALSE)            /* FALSE se matt deve essere libera */
+								turnim[x][cursor] = '*';
+							++x;
+						}
+						/*
+						if(todo->id[0] == 'n') {
+							turnim[x][cursor] = 's';
+							turnip[x][cursor] = '*';
+						
+						} */
+					}
+				}
+			}
+		}
+	}
 }
 
 void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
@@ -1039,7 +847,7 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 				if(counter > 3)
 					exit;
 				if(result == 0) {
-					if(todo->id == 'G') {                                 /* controlla che le guardie non siano troppo vicine */
+					if(todo->id[0] == 'G') {                                 /* controlla che le guardie non siano troppo vicine */
 						if((check_guardie(current)) == 0) {
 							++current->guardie;
 							for(y = x - 2;y < x + 2;y++)
@@ -1051,7 +859,7 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 						else
 							result = 1;
 					}
-					else if(todo->id == 'R') {                                 /* impedisce 2 settimane di giro */
+					else if(todo->id[0] == 'R') {                                 /* impedisce 2 settimane di giro */
 						if(x > 5) {
 							for(y = x - 4;y < x + 8;y++)
 								if(turnim[y][cursor] == 'R')
@@ -1064,7 +872,7 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 						}
 						
 					}
-					else if(todo->id == 'n') {
+					else if(todo->id[0] == 'n') {
 						if(turnim[x + 1][cursor] != ' ')
 							result = 1;
 						if(x > 3) {
@@ -1091,25 +899,25 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 			for(z = 0;z < todo->length;z++) {
 				if(x < dmesi[month]) {
 					if((strcmp(todo->when,"M")) == 0) {
-						turnim[x][cursor] = todo->id;
+						turnim[x][cursor] = todo->id[0];
 						if(todo->altro == FALSE)            /* FALSE se pome deve essere libero */
 							turnip[x][cursor] = '*';
 						++x;
 					}
 					else {
-						turnip[x][cursor] = todo->id;
+						turnip[x][cursor] = todo->id[0];
 						if(todo->altro == FALSE)            /* FALSE se matt deve essere libera */
 							turnim[x][cursor] = '*';
 						++x;
 					}
-					if(todo->id == 'n') {
+					if(todo->id[0] == 'n') {
 						turnim[x][cursor] = 's';
 						turnip[x][cursor] = '*';
 					}
 				}
 			}
 			if((current = panta_rei(current)) == NULL)
-					current = first;
+				current = first;
 		}
 	}
 }
@@ -1120,6 +928,8 @@ char data[15],risp[2],nam[4],c;
 int x, y, dnum, day1, item;
 struct medico *current, *first;
 struct activity *todo;
+FILE *fatt;
+/*
 GtkWidget *window;
 
 gtk_init(&argc, &argv);
@@ -1128,7 +938,7 @@ gtk_widget_show(window);
 g_signal_connect(window, "destroy",
     G_CALLBACK(gtk_main_quit), NULL);  
 gtk_main();
-
+*/
 while((item = menu()) != 9) {
 	if(item == 1)
 		elenco_medici();
@@ -1156,7 +966,11 @@ while((item = menu()) != 9) {
 		scanf("%c",&c);
 	}
 	else if(item == 4) {
-		todo = lavura();
+		fatt = fopen("attivita.txt","r");
+		if(fatt == NULL)
+        	break;
+		else
+			todo = lavura2(fatt);
 		current = dutur();		
 		first = current;
 		cursor = 0;
@@ -1168,9 +982,11 @@ while((item = menu()) != 9) {
 		}
 		do {
 			current = first;
+			printf("todo->name = %s\n",todo->name);
 			for(x = 0;x < todo->who;x++)               /* who = numero medici */
-				fa_su_sti_turni(dnum,current,todo);
+				ciapa_chi(dnum,current,todo);
 			todo = todo->next;
+			printf("todo->id = %s\n",todo->id);
 		} while(todo != NULL);
 		printf("\t\t");
 		current = first;
