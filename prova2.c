@@ -708,24 +708,48 @@ int choose2(struct medico *current,char c[2])
 	return(1);
 }
 
-int varda_se_el_va_ben(int length, char when[2], int x)
+int varda_se_el_va_ben(int length, char when[2], int x, int m)
 {
 	int u;
 
-	if(strcmp(when,"M") == 0) {
-		for(u = 0;u < length;u++)
-			if(turnim[x + u][cursor] != ' ')
+	for(u = x;x < length;u++) {
+		if(x > m)
+			return(0);
+		if(when[0] == 'M')
+			if(turnim[u][cursor] != ' ')
 				return(1);
-		for(u = -1;u < 1;u++)
-			if(turnim[x + u][cursor] == 'n')
+		else if(when[0] == 'N')
+			if(turnim[u][cursor] != ' ')
+				return(1);
+		else
+			if(turnip[u][cursor] != ' ')
 				return(1);
 	}
-	else
-		for(u = 0;u < length;u++)
-			if(turnip[x + u][cursor] != ' ')
-				return(1);
 	return(0);
 }
+/*
+	if(strcmp(when,"M") == 0) {
+		for(u = 0;u < length;u++) {
+			if(x + u == m)
+				return(0);
+			if(turnim[x + u][cursor] != ' ')
+				return(1);
+		}
+		for(u = -1;u < 1;u++) {
+			if(x + u == m)
+				return(0);
+			if(turnim[x + u][cursor] == 'n')
+				return(1);
+		}
+	}
+	else
+		for(u = 0;u < length;u++) {
+			if(x + u == m)
+				return(0);
+			if(turnip[x + u][cursor] != ' ')
+				return(1);
+		}
+*/
 
 int check_guardie(struct medico *current)
 {
@@ -742,8 +766,8 @@ int check_guardie(struct medico *current)
 
 void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 {
-	char firstday[4];
-	int month,x,z,result;
+	char firstday[4],c[2];
+	int month,x,z,y,temp,var,result;
 	struct medico *first;
 
 	first = current;
@@ -767,27 +791,37 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 	}
 	month = fabs(dnum/100);
 	for(x = 0;x < dmesi[month];x++) {
-		if((strcmp(firstday,mes[x])) == 0) {
-			while((choose2(current,todo->id)) == 1) {
-				current = current->next;
-				if(current == NULL) {
-					current = first;
+		while((strcmp(firstday,mes[x])) == 0) {
+			printf("x = %d\n",x);
+/*			
+			scanf("%s",c);
+*/
+			temp = x;
+			for(y = 0;y < todo->who;y++) {
+				x = temp;
+				while((choose2(current,todo->id)) == 1) {
+					current = current->next;
+					if(current == NULL)
+						current = first;
 				}
-			}
-			cursor = current->id;
-			result = varda_se_el_va_ben(todo->length,todo->when,x);
-			if(result == 1) {
-				if((current = panta_rei(current)) == NULL) {
-					current = first;
+				cursor = current->id;
+				result = varda_se_el_va_ben(todo->length,todo->when,x,dmesi[month]);
+				printf("result = %d\n",result);
+				if(result == 1) {
+					if((current = panta_rei(current)) == NULL)
+						current = first;
 				}
-			}
-			else {
-				for(z = 0;z < todo->length;z++) {
-					if(x < dmesi[month]) {
-						if((strcmp(todo->when,"M")) == 0) {
-							printf("ciap todo->id = %s\n",todo->id);
-							printf("cursor = %d\n",cursor);
-							turnim[x][cursor] = todo->id[0];
+				else {
+					var = todo->length;                        /* controllo per l'ultimo giorno del mese */
+					if((x + todo->length) > dmesi[month])
+						var = dmesi[month] - x - 1;
+						printf("var = %d\n",var);
+					for(z = 0;z < var;z++) {
+						if(x < dmesi[month]) {
+							if((strcmp(todo->when,"P")) != 0) {
+								printf("cursor = %d\n",cursor);
+								turnim[x][cursor] = todo->id[0];
+							}
 							if(todo->altro == FALSE)            /* FALSE se pome deve essere libero */
 								turnip[x][cursor] = '*';
 							printf("turnim = %c\n",turnim[x][cursor]);
@@ -807,6 +841,8 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 						} */
 					}
 				}
+				if((current = panta_rei(current)) == NULL)
+					current = first;
 			}
 		}
 	}
@@ -843,7 +879,7 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 					}
 				}
 				cursor = current->id;
-				result = varda_se_el_va_ben(todo->length,todo->when,x);
+				result = varda_se_el_va_ben(todo->length,todo->when,x,dmesi[month]);
 				if(counter > 3)
 					exit;
 				if(result == 0) {
@@ -983,8 +1019,7 @@ while((item = menu()) != 9) {
 		do {
 			current = first;
 			printf("todo->name = %s\n",todo->name);
-			for(x = 0;x < todo->who;x++)               /* who = numero medici */
-				ciapa_chi(dnum,current,todo);
+			ciapa_chi(dnum,current,todo);
 			todo = todo->next;
 			printf("todo->id = %s\n",todo->id);
 		} while(todo != NULL);
