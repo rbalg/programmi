@@ -691,6 +691,7 @@ return(alippa);
 struct medico *panta_rei(struct medico *current)
 {	
 	current = current->next;
+	cursor = current->id;
 	if(current == NULL)
 		return(NULL);
 	else
@@ -715,7 +716,7 @@ int varda_se_el_va_ben(int length, char when[2], int x, int m)
 	for(u = x;u < x + length;u++) {
 		if(x > m)
 			return(0);
-		printf("when[0] = %d\n",when[0]);
+		printf("cursor = %d\n",cursor);
 		if(when[0] == 'M')
 			if(turnim[u][cursor] == ' ')
 				return(0);
@@ -792,7 +793,7 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 		if((strcmp(firstday,mes[x])) == 0) {
 			printf("x = %d\n",x);
 			temp = x;
-			for(y = 0;y < todo->who;y++) {
+			do {
 				x = temp;
 				while((choose2(current,todo->id)) == 1) {
 					current = current->next;
@@ -822,6 +823,7 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 								turnim[x][cursor] = '*';
 						}
 						++x;
+						++y;
 						/*
 						if(todo->id[0] == 'n') {
 							turnim[x][cursor] = 's';
@@ -832,7 +834,7 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 				}
 				if((current = panta_rei(current)) == NULL)
 					current = first;
-			}
+			} while(y < todo->who);
 		}
 	}
 }
