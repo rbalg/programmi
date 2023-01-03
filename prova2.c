@@ -712,20 +712,18 @@ int varda_se_el_va_ben(int length, char when[2], int x, int m)
 {
 	int u;
 
-	for(u = x;x < length;u++) {
+	for(u = x;u < x + length;u++) {
 		if(x > m)
 			return(0);
+		printf("when[0] = %d\n",when[0]);
 		if(when[0] == 'M')
-			if(turnim[u][cursor] != ' ')
-				return(1);
-		else if(when[0] == 'N')
-			if(turnim[u][cursor] != ' ')
-				return(1);
-		else
-			if(turnip[u][cursor] != ' ')
-				return(1);
+			if(turnim[u][cursor] == ' ')
+				return(0);
+		else if(when[0] == 'P')
+			if(turnip[u][cursor] == ' ')
+				return(0);
 	}
-	return(0);
+	return(1);
 }
 /*
 	if(strcmp(when,"M") == 0) {
@@ -791,11 +789,8 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 	}
 	month = fabs(dnum/100);
 	for(x = 0;x < dmesi[month];x++) {
-		while((strcmp(firstday,mes[x])) == 0) {
+		if((strcmp(firstday,mes[x])) == 0) {
 			printf("x = %d\n",x);
-/*			
-			scanf("%s",c);
-*/
 			temp = x;
 			for(y = 0;y < todo->who;y++) {
 				x = temp;
@@ -815,7 +810,6 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 					var = todo->length;                        /* controllo per l'ultimo giorno del mese */
 					if((x + todo->length) > dmesi[month])
 						var = dmesi[month] - x - 1;
-					printf("var = %d\n",var);
 					for(z = 0;z < var;z++) {
 						if((strcmp(todo->when,"P")) != 0) {
 							turnim[x][cursor] = todo->id[0];
