@@ -815,24 +815,19 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 					var = todo->length;                        /* controllo per l'ultimo giorno del mese */
 					if((x + todo->length) > dmesi[month])
 						var = dmesi[month] - x - 1;
-						printf("var = %d\n",var);
+					printf("var = %d\n",var);
 					for(z = 0;z < var;z++) {
-						if(x < dmesi[month]) {
-							if((strcmp(todo->when,"P")) != 0) {
-								printf("cursor = %d\n",cursor);
-								turnim[x][cursor] = todo->id[0];
-							}
+						if((strcmp(todo->when,"P")) != 0) {
+							turnim[x][cursor] = todo->id[0];
 							if(todo->altro == FALSE)            /* FALSE se pome deve essere libero */
 								turnip[x][cursor] = '*';
-							printf("turnim = %c\n",turnim[x][cursor]);
-							++x;
 						}
 						else {
 							turnip[x][cursor] = todo->id[0];
 							if(todo->altro == FALSE)            /* FALSE se matt deve essere libera */
 								turnim[x][cursor] = '*';
-							++x;
 						}
+						++x;
 						/*
 						if(todo->id[0] == 'n') {
 							turnim[x][cursor] = 's';
