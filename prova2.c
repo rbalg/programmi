@@ -210,17 +210,17 @@ int year, month, tb1, tab2;
 month = fabs(dnum/100);
 year = dnum - month * 100;
 switch(year) {
-	case 19:
+	case 23:
+		tb1 = 1;
+		break;
+	case 24:
 		tb1 = 3;
 		break;
-	case 20:
+	case 25:
+		tb1 = 4;
+		break;
+	case 26:
 		tb1 = 5;
-		break;
-	case 21:
-		tb1 = 6;
-		break;
-	case 22:
-		tb1 = 0;
 		break;
 	}
 switch(month) {
@@ -272,9 +272,9 @@ anno[0] = data[4];
 anno[1] = data[5];
 anno[2] = '\0';
 res = atoi(anno);
-if(res < 19)
+if(res < 22)
 	return(0);
-else if (res > 22)
+else if (res > 26)
 	return(0);
 for(x = 0;x < 12;x++)
 	if(strcmp(mese,mesi[x]) == 0)
@@ -716,10 +716,11 @@ int varda_se_el_va_ben(int length, char when[2], int x, int m)
 	for(u = x;u < x + length;u++) {
 		if(x > m)
 			return(0);
-		printf("cursor = %d\n",cursor);
-		if(when[0] == 'M')
+		if(when[0] == 'M') {
+			printf("Cursor = %d\n",cursor);
 			if(turnim[u][cursor] == ' ')
 				return(0);
+		}
 		else if(when[0] == 'P')
 			if(turnip[u][cursor] == ' ')
 				return(0);
@@ -794,43 +795,43 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 			printf("x = %d\n",x);
 			temp = x;
 			do {
-				x = temp;
-				while((choose2(current,todo->id)) == 1) {
-					current = current->next;
-					if(current == NULL)
-						current = first;
-				}
-				cursor = current->id;
-				result = varda_se_el_va_ben(todo->length,todo->when,x,dmesi[month]);
-				printf("result = %d\n",result);
-				if(result == 1) {
-					if((current = panta_rei(current)) == NULL)
-						current = first;
-				}
-				else {
-					var = todo->length;                        /* controllo per l'ultimo giorno del mese */
-					if((x + todo->length) > dmesi[month])
-						var = dmesi[month] - x - 1;
-					for(z = 0;z < var;z++) {
-						if((strcmp(todo->when,"P")) != 0) {
-							turnim[x][cursor] = todo->id[0];
-							if(todo->altro == FALSE)            /* FALSE se pome deve essere libero */
-								turnip[x][cursor] = '*';
-						}
-						else {
-							turnip[x][cursor] = todo->id[0];
-							if(todo->altro == FALSE)            /* FALSE se matt deve essere libera */
-								turnim[x][cursor] = '*';
-						}
-						++x;
-						++y;
-						/*
-						if(todo->id[0] == 'n') {
-							turnim[x][cursor] = 's';
-							turnip[x][cursor] = '*';
-						
-						} */
+				do {
+					x = temp;
+					while((choose2(current,todo->id)) == 1) {
+						current = current->next;
+						if(current == NULL)
+							current = first;
 					}
+					cursor = current->id;
+					printf("todo->when = %c\n",todo->when[0]);
+					result = varda_se_el_va_ben(todo->length,todo->when,x,dmesi[month]);
+					printf("result = %d\n",result);
+					if(result == 1) {
+						if((current = panta_rei(current)) == NULL)
+							current = first;
+					}
+				} while(result == 1);
+				var = todo->length;                        /* controllo per l'ultimo giorno del mese */
+				if((x + todo->length) > dmesi[month])
+					var = dmesi[month] - x - 1;
+				for(z = 0;z < var;z++) {
+					if((strcmp(todo->when,"P")) != 0) {
+						turnim[x][cursor] = todo->id[0];
+						if(todo->altro == FALSE)            /* FALSE se pome deve essere libero */
+							turnip[x][cursor] = '*';
+					}
+					else {
+						turnip[x][cursor] = todo->id[0];
+						if(todo->altro == FALSE)            /* FALSE se matt deve essere libera */
+							turnim[x][cursor] = '*';
+					}
+					++x;
+					++y;
+					/*
+					if(todo->id[0] == 'n') {
+						turnim[x][cursor] = 's';
+						turnip[x][cursor] = '*';		
+					} */
 				}
 				if((current = panta_rei(current)) == NULL)
 					current = first;
@@ -952,7 +953,7 @@ void fa_su_sti_turni(int dnum, struct medico *current, struct activity *todo)
 void main(int argc, char *argv[])
 {
 char data[15],risp[2],nam[4],c; 
-int x, y, dnum, day1, item;
+int x, y, dnum, day1, item, days;
 struct medico *current, *first;
 struct activity *todo;
 FILE *fatt;
@@ -972,7 +973,7 @@ while((item = menu()) != 9) {
 	else if(item == 2) {
 		dnum = 0;
 		while(dnum == 0) {
-			printf("immetti mese e anno, es <gen-19> ");
+			printf("immetti mese e anno, es <gen-23> ");
 			scanf("%s",data);
 			dnum = check_date(data);
 			if (dnum == 0)
@@ -1023,7 +1024,15 @@ while((item = menu()) != 9) {
 			current = current->next;
 		}
 		printf("\n");
-		for(x = 0;x < 30;x++) {
+		y = fabs(dnum/100);
+		days = dmesi[y-1];
+		for(x = 0;x < days;x++) {
+			if(strcmp(mes[x],"SAB") == 0)
+				printf("%s",RED);
+			else if(strcmp(mes[x],"DOM") == 0)
+				printf("%s",RED);
+			else
+				printf("%s",RESET);
 			printf("%d\t  %s = ",x+1,mes[x]);
 			for(y = 0;y < 13;y++) {
 				if(turnim[x][y] == '\0')
