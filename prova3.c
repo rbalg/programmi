@@ -796,8 +796,8 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 			temp = x;
 			y = 0;
 			do {
+				x = temp;
 				do {
-				/*x = temp; */
 					while((choose2(current,todo->id)) == 1) {
 						current = current->next;
 						if(current == NULL)
@@ -821,7 +821,9 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 							turnip[x][cursor] = '*';
 						if(todo->id[0] == 'n')
 							if(x < dmesi[month - 1])
-								turnim[x-- + 1][cursor] = 's';
+								turnim[x-- + 1][cursor] = 's';        /* diminuisce x perchè assegna il giorno successivo a quello del ciclo do - while */
+						if(todo->id[0] == 'G')
+							--x;
 					}
 					else {
 						turnip[x][cursor] = todo->id[0];
