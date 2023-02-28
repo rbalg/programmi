@@ -499,6 +499,12 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
         result = strcmp(firstday,mes[x]);             /* cerca il primo giorno dell'attività */
         if(todo->init == -1)                          /* se l'attività è presente sempre e non inizia in un giorno specifico */
             result = 0;
+		if(todo->id[0] == 'A') {
+			if((strcmp(mes[x],"SAB")) == 0)
+				result = 1;
+			else if((strcmp(mes[x],"DOM")) == 0)
+				result = 1;
+		}
 		if(result == 0) {
 			temp = x;
 			for(y = 0;y < todo->who;y++) {
@@ -530,6 +536,8 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 					--x;	
 				}
 				if(todo->id[0] == 'G')
+					--x;
+				if(todo->id[0] == 'A')
 					--x;
 				current = current->next;
 			}
