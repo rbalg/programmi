@@ -1,3 +1,22 @@
+********************************
+* File delle attività          *
+* 1 - sigla attività           *
+* 2 - 0 pom libero - 1 no      *
+* 3 - nome attività            *
+* 4 - inizio, 0 lun, -1 sempre *
+* 5 - quanti giorni            *
+* 6 - M mattina - P pomeriggio *
+* 7 - quanti medici servono    *
+********************************
+---
+G
+0
+gua
+-1
+1
+M
+1
+---
 R
 0
 rep
@@ -9,24 +28,19 @@ M
 n
 0
 not
-0
-5
-N
+-1
 1
-*-*
-G
-0
-gua
-0
-5
 M
 1
----
+*-*
 A
 1
 amb
-0
-5
+-1
+1
 M
 1
 *-*
+
+
+
