@@ -16,8 +16,8 @@
 #define CYAN    "\033[36m"      /* Cyan */
 #define WHITE   "\033[37m"      /* White */
 
-char turnim[30][13];
-char turnip[30][13];
+char turnim[31][14];
+char turnip[31][14];
 
 char *mesi[] =
 {
@@ -452,7 +452,7 @@ int catel(struct medico *current,struct activity *todo, int x, int var)
 				if(turnip[u][current->id] != ' ')
 					return(1);
 		}
-		if(todo->id[0] == 'n')
+		if((todo->id[0] == 'n') && (u < x + todo->length))
 			if(var > 0)
 				if(turnim[x + 1][current->id] != ' ')
 					return(1);
