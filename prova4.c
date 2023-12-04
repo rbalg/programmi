@@ -444,7 +444,7 @@ int catel(struct medico *current,struct activity *todo, int x, int var)
 		if(x > 0)								/* controlla che non sia il primo giorno del mese */
 			if(turnim[x - 1][current->id] == 'n')
 				return(1);
-		for(u = x;u < x + var;u++) {
+		for(u = x;u < x + todo->length;u++) {
 			if(todo->when[0] == 'M')
 				if(turnim[u][current->id] != ' ')
 					return(1);
@@ -476,7 +476,7 @@ int check_guardie(struct medico *current)
 void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 {
 	char firstday[4],c[2];
-	int month,x,z,y,temp,var,num,buf,buf2,result;
+	int month,x,z,y,temp,var,num,result;
 	struct medico *first;
 
 	first = current;
@@ -500,7 +500,7 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 	}
 	month = fabs(dnum/100);
 	var = num = 0;
-/*	printf("month = %d\n",month); */
+	printf("month = %d\n",month);
 	for(x = 0;x < dmesi[month - 1];x++) {
 		if(var == 0) {
    			result = strcmp(firstday,mes[x]);             /* cerca il primo giorno dell'attività */
@@ -514,22 +514,18 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 				else if((strcmp(mes[x],"FES")) == 0)
 					result = 1;
 			}
-			if(result == 0) {
-				num = todo->who;							/* numero di medici per una attività */
-				var = todo->length; 							/* imposta la lunghezza del periodo dell'attività */
-				if((x + todo->length) > dmesi[month - 1])                        /* controllo per l'ultimo giorno del mese */
-					var = dmesi[month - 1] - x - 1;
-				buf = var;
-				buf2 = x;
-			}	
 		}
-		if(num > 0) {
+		if((result == 0) && (num == 0)) {
+			var = todo->length; 							/* imposta la lunghezza del periodo dell'attività */
+			if((x + todo->length) > dmesi[month - 1])                        /* controllo per l'ultimo giorno del mese */
+				var = dmesi[month - 1] - x - 1;
 			do {
 				result = catel(current,todo,x,var);          /*cerca il medico adatto e controlla se è libero*/
 				if(result == 1)
 					current = current->next;
 			} while(result == 1);
-		}
+            num = todo->who;								/* numero di medici per una attività */
+        }
 		if(result == 0) {
 			printf("x = %d\n",x);
 			printf("current->id %d\n",current->id);
@@ -549,15 +545,9 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 					turnip[x + 1][current->id] = '*';	
 				}
 			}
-			if(--var == 0) {
-				if(--num == 0)
-					current = current->next;
-				else {
-					var = buf;
-					if(buf2 > 0)
-						x = --buf2;
-				}
-			}
+			current = current->next;
+			--var;
+            --num;
 		}
 	}
 }
