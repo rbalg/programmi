@@ -18,6 +18,7 @@
 
 char turnim[31][14];
 char turnip[31][14];
+char errori[31];
 
 char *mesi[] =
 {
@@ -124,19 +125,25 @@ char *mes[] =
 /* elenco medici
 con elenco delle relative abilità
 
-D = doppler
-C = cefalee
-U = uva
-V = cerebrovascolare
+n = notte
+g = guardia
+R = reparto
+a = ambulatorio
+p = pomeriggio
+t = stroke
+u = uva
+d = doppler
+c = cefalee
+v = cerebrovascolare
 S = sm
-O = oncologia
+o = oncologia
 P = parkinson
 N = neuromuscolare
-T = stroke
-M = emg
-E = epilessia
-B = tossina
-R = reparto
+m = emg
+e = epilessia
+b = tossina
+
+
 */
 
 #define TRUE 1
@@ -156,7 +163,7 @@ struct activity {
 struct medico {
 	int id;
 	char name[15];
-	char cap[9];
+	char cap[15];
 	int guardie;
 	int notti;
 	int g_fest;
@@ -506,7 +513,7 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
    			result = strcmp(firstday,mes[x]);             /* cerca il primo giorno dell'attività */
    			if(todo->init == -1)                          /* se l'attività è presente sempre e non inizia in un giorno specifico */
    				result = 0;
-			if(todo->id[0] == 'A') {
+			if(todo->id[0] == 'a') {
 				if((strcmp(mes[x],"SAB")) == 0)
 					result = 1;
 				else if((strcmp(mes[x],"DOM")) == 0)
@@ -524,10 +531,17 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 			}	
 		}
 		if(num > 0) {
+			z = 0;
 			do {
 				result = catel(current,todo,x,var);          /*cerca il medico adatto e controlla se è libero*/
-				if(result == 1)
+				if(result == 1) {
 					current = current->next;
+					++z;
+				}
+				if(z > 28) {
+					errori[x] ==todo->id[0];
+					break;
+				}
 			} while(result == 1);
 		}
 		if(result == 0) {
@@ -616,6 +630,7 @@ while((item = menu()) != 9) {
 			for(y = 0;y < 14;y++) {
 				turnim[x][y] = ' ';
 				turnip[x][y] = ' ';
+				errori[x] = ' ';
 			}
 		}
 		do {
