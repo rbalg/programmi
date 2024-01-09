@@ -480,6 +480,15 @@ int check_guardie(struct medico *current)
 	return(0);
 }
 
+int vardafest(struct activity *todo, int x)
+{
+	if((strcmp(mes[x],"FES")) == 0)
+		if((todo->id[0] == 'r') || (todo->id[0] == 'R'))
+			return(-1);
+	else
+		return(0);
+}
+
 void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 {
 	char firstday[4],c[2];
@@ -545,20 +554,25 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 			} while(result == 1);
 		}
 		if(result == 0) {
-			if((strcmp(todo->when,"P")) != 0) {
-				turnim[x][current->id] = todo->id[0];
-				if(todo->altro == FALSE)            /* FALSE se pome deve essere libero */
-					turnip[x][current->id] = '*';
-			}
+			result = vardafest(todo,x);
+			if(result == -1)
+				++x;
 			else {
-				turnip[x][current->id] = todo->id[0];
-				if(todo->altro == FALSE)            /* FALSE se matt deve essere libera */
-					turnim[x][current->id] = '*';
-			}
-			if(x < dmesi[month - 1]) {
-				if(todo->id[0] == 'n') {
-					turnim[x + 1][current->id] = 's';
-					turnip[x + 1][current->id] = '*';	
+				if((strcmp(todo->when,"P")) != 0) {
+					turnim[x][current->id] = todo->id[0];
+					if(todo->altro == FALSE)            /* FALSE se pome deve essere libero */
+						turnip[x][current->id] = '*';
+				}
+				else {
+					turnip[x][current->id] = todo->id[0];
+					if(todo->altro == FALSE)            /* FALSE se matt deve essere libera */
+						turnim[x][current->id] = '*';
+				}
+				if(x < dmesi[month - 1]) {
+					if(todo->id[0] == 'n') {
+						turnim[x + 1][current->id] = 's';
+						turnip[x + 1][current->id] = '*';	
+					}
 				}
 			}
 			if(--var == 0) {
