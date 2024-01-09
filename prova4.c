@@ -554,8 +554,7 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 			} while(result == 1);
 		}
 		if(result == 0) {
-			result = vardafest(todo,x);
-			if(result == -1)
+			if((vardafest(todo,x)) == -1)			/*controlla che il giro non prosegua nei festivi*/
 				++x;
 			else {
 				if((strcmp(todo->when,"P")) != 0) {
