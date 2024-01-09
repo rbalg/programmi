@@ -482,9 +482,11 @@ int check_guardie(struct medico *current)
 
 int vardafest(struct activity *todo, int x)
 {
-	if((strcmp(mes[x],"FES")) == 0)
+	if(((strcmp(mes[x],"FES")) == 0) || (strcmp(mes[x],"SAB")) == 0)
 		if((todo->id[0] == 'r') || (todo->id[0] == 'R'))
 			return(-1);
+		else if(todo->id[0] == 't')
+			return (-1);
 	else
 		return(0);
 }
