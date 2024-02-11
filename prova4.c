@@ -199,6 +199,8 @@ struct err {
 
 struct current *medico;
 
+struct err *erur;
+
 int cursor; /* numero medico corrente */
 
 int get_day(int dnum)
@@ -482,7 +484,7 @@ int vardafest(struct activity *todo, int x)
 		return(0);
 }
 
-struct err *track(struct err *erur, struct activity *todo, int x)
+struct err *track(struct activity *todo, int x)
 {
 	struct err *errore,*bup;
 
@@ -503,7 +505,6 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 	char firstday[4],c[2];
 	int month,x,z,y,temp,var,num,buf,buf2,result;
 	struct medico *first;
-	struct err *erur;
 
 	first = current;
 	switch(todo->init)
@@ -558,7 +559,7 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 					++z;
 				}
 				if(z > NMED*2) {
-					erur = track(erur,todo,x);
+					erur = track(todo,x);
 					break;
 				}
 			} while(result == 1);
@@ -656,6 +657,7 @@ while((item = menu()) != 9) {
 				errori[x] = ' ';
 			}
 		}
+		erur = NULL;
 		do {
 			current = first;
 			printf("todo->name = %s\n",todo->name);
@@ -663,6 +665,8 @@ while((item = menu()) != 9) {
 			todo = todo->next;
 			printf("todo->id = %s\n",todo->id);
 		} while(todo != NULL);
+		if(erur != NULL)
+			printf("presenti errori!\n");
 		printf("\t\t");
 		current = first;
 		for(y = 0;y < 14;y++) {
