@@ -16,6 +16,8 @@
 #define CYAN    "\033[36m"      /* Cyan */
 #define WHITE   "\033[37m"      /* White */
 
+#define NMED 14
+
 char turnim[31][14];
 char turnip[31][14];
 char errori[31];
@@ -189,26 +191,15 @@ struct des_amb {
 	struct des_amb *next;
 };
 
+struct err {
+	char noghesta[2];
+	int giorno;
+	struct err *next;
+};
+
 struct current *medico;
 
 int cursor; /* numero medico corrente */
-/*
-char *med[13][13] = {
-{"Aliprandi","DCUVT"},
-{"Balgera","USO"},
-{"Basilico","UO"},
-{"Bianchi","UOP"},
-{"Borelli","DCUP"},
-{"Costantino","DCUVT"},
-{"Fiumani","CU"},
-{"Mantero","SN"},
-{"Piamarta","UOPE"},
-{"Rigamonti","CUNE"},
-{"Sangalli","DCVT"},
-{"Stanzani","UNE"},
-{"Scaccabarozzi","UVOT"}
-};
-*/
 
 int get_day(int dnum)
 {
@@ -480,11 +471,39 @@ int check_guardie(struct medico *current)
 	return(0);
 }
 
+int vardafest(struct activity *todo, int x)
+{
+	if(((strcmp(mes[x],"FES")) == 0) || (strcmp(mes[x],"SAB") == 0) || (strcmp(mes[x],"DOM") == 0))
+		if((todo->id[0] == 'r') || (todo->id[0] == 'R'))
+			return(-1);
+		else if(todo->id[0] == 't')
+			return (-1);
+	else
+		return(0);
+}
+
+struct err *track(struct err *erur, struct activity *todo, int x)
+{
+	struct err *errore,*bup;
+
+	bup = erur;
+	while(erur->next == NULL)
+	{
+		erur = erur->next;
+	}
+	errore = malloc(sizeof(struct err));
+	errore->noghesta[0] = todo->id[0];
+	errore->giorno = x;
+	erur->next = errore;
+	return(bup);
+}
+
 void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 {
 	char firstday[4],c[2];
 	int month,x,z,y,temp,var,num,buf,buf2,result;
 	struct medico *first;
+	struct err *erur;
 
 	first = current;
 	switch(todo->init)
@@ -538,27 +557,31 @@ void ciapa_chi(int dnum, struct medico *current, struct activity *todo)
 					current = current->next;
 					++z;
 				}
-				if(z > 28) {
-					errori[x] ==todo->id[0];
+				if(z > NMED*2) {
+					erur = track(erur,todo,x);
 					break;
 				}
 			} while(result == 1);
 		}
 		if(result == 0) {
-			if((strcmp(todo->when,"P")) != 0) {
-				turnim[x][current->id] = todo->id[0];
-				if(todo->altro == FALSE)            /* FALSE se pome deve essere libero */
-					turnip[x][current->id] = '*';
-			}
+			if((vardafest(todo,x)) == -1)			/*controlla che il giro non prosegua nei festivi*/
+				++x;
 			else {
-				turnip[x][current->id] = todo->id[0];
-				if(todo->altro == FALSE)            /* FALSE se matt deve essere libera */
-					turnim[x][current->id] = '*';
-			}
-			if(x < dmesi[month - 1]) {
-				if(todo->id[0] == 'n') {
-					turnim[x + 1][current->id] = 's';
-					turnip[x + 1][current->id] = '*';	
+				if((strcmp(todo->when,"P")) != 0) {
+					turnim[x][current->id] = todo->id[0];
+					if(todo->altro == FALSE)            /* FALSE se pome deve essere libero */
+						turnip[x][current->id] = '*';
+				}
+				else {
+					turnip[x][current->id] = todo->id[0];
+					if(todo->altro == FALSE)            /* FALSE se matt deve essere libera */
+						turnim[x][current->id] = '*';
+				}
+				if(x < dmesi[month - 1]) {
+					if(todo->id[0] == 'n') {
+						turnim[x + 1][current->id] = 's';
+						turnip[x + 1][current->id] = '*';	
+					}
 				}
 			}
 			if(--var == 0) {
